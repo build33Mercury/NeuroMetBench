@@ -1,0 +1,2 @@
+recursive-include src/neurometbench_ref/fixtures *.json
+include LICENSE

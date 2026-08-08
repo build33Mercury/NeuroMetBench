@@ -1,0 +1,34 @@
+{
+  "artifacts": {
+    "invalid_flux_matrix": {
+      "affirmative_biological_use_allowed": false,
+      "allowed_purposes": [
+        "numerical_failure_fixture",
+        "audit_fixture"
+      ],
+      "disposition": "QUARANTINED_INVALID_NONZERO_FLUX_MATRIX",
+      "sha256": "5442b218202717f2127f62922d8abecc825d7e33774535fbbe9470003b0a8249"
+    },
+    "mras_bound_input": {
+      "affirmative_biological_use_allowed": false,
+      "allowed_purposes": [
+        "bound_input",
+        "transcript_activity_input",
+        "audit_fixture"
+      ],
+      "disposition": "PRESERVED_TRANSCRIPT_DERIVED_BOUND_INPUT_NOT_FLUX",
+      "sha256": "82506b7a89f4433c2f7596c9fafc4ac74e0e6d4b1f13ae934eee243705ae3dee"
+    },
+    "pinned_numerical_model": {
+      "affirmative_biological_use_allowed": false,
+      "allowed_purposes": [
+        "numerical_model",
+        "structural_reproduction",
+        "audit_fixture"
+      ],
+      "disposition": "PRESERVED_STRUCTURALLY_VALID_NUMERICAL_MODEL",
+      "sha256": "2efd6650f48ee5b57f3c0b95f405308fa3fc9a6ba8f66f3c8b2ff831ea98dd49"
+    }
+  },
+  "claim_boundary": "No artifact in this manifest is measured absolute flux. The invalid nonzero flux matrix is never affirmative biological evidence."
+}

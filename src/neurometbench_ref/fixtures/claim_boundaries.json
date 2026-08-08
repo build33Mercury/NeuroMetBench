@@ -1,0 +1,88 @@
+{
+  "artifact_firewall": {
+    "invalid_flux_allowed_purposes": [
+      "numerical_failure_fixture",
+      "audit_fixture"
+    ],
+    "invalid_flux_sha256": "5442b218202717f2127f62922d8abecc825d7e33774535fbbe9470003b0a8249",
+    "model_sha256": "2efd6650f48ee5b57f3c0b95f405308fa3fc9a6ba8f66f3c8b2ff831ea98dd49",
+    "mras_sha256": "82506b7a89f4433c2f7596c9fafc4ac74e0e6d4b1f13ae934eee243705ae3dee"
+  },
+  "forbidden_claims": [
+    {
+      "claim": "Do not claim universal superiority, universal metabolic prediction, or uniform pathway reliability.",
+      "claim_id": "NO_UNIVERSAL_PREDICTOR"
+    },
+    {
+      "claim": "Do not describe transcript-derived scores, MRAS, or the quarantined output matrix as measured or absolute flux.",
+      "claim_id": "NO_ABSOLUTE_FLUX"
+    },
+    {
+      "claim": "Do not use the quarantined nonzero METAFlux matrix for any affirmative biological association, ranking, validation, or pathway conclusion.",
+      "claim_id": "NO_INVALID_METAFLUX_BIOLOGY"
+    },
+    {
+      "claim": "Do not claim positive spatial validation or direct barcode-level continuous-isotope association.",
+      "claim_id": "NO_POSITIVE_SPATIAL_VALIDATION"
+    },
+    {
+      "claim": "Do not generalize the human isotope or xenograft n=3 rank-preservation results to a population.",
+      "claim_id": "NO_N3_GENERALIZATION"
+    },
+    {
+      "claim": "Do not identify one exact originating Human-GEM SBML/YAML release or claim a mass/charge-balance audit; that identity bridge was not proven.",
+      "claim_id": "NO_EXACT_HUMANGEM_RELEASE"
+    },
+    {
+      "claim": "Do not claim CPTAC metabolomics validation or direct barcode-level continuous MSI isotope data, because those endpoints were unavailable.",
+      "claim_id": "NO_UNAVAILABLE_ENDPOINTS"
+    }
+  ],
+  "global_interpretation": "Technical reproducibility, gene-level reliability transport, pathway-level RNA-protein concordance, context transportability, spatial association, and numerical optimization validity are distinct properties and must be evaluated separately.",
+  "ledger_version": "1.0",
+  "permitted_claims": [
+    {
+      "claim": "The reference implementation enforces patient-level or equal-patient inference and rejects duplicate patient-metric rows that would create pseudoreplication.",
+      "claim_id": "PATIENT_LEVEL_INFERENCE",
+      "status": "VALID_METHOD"
+    },
+    {
+      "claim": "In three human in-vivo tracing cases, the frozen primary acquisition score preserved the observed ordering descriptively (rho=1; exact p=1/3).",
+      "claim_id": "HUMAN_ISOTOPE",
+      "status": "VALID_DESCRIPTIVE_SEVERE_N3"
+    },
+    {
+      "claim": "Across seven neurosphere models, isotope alignment was mixed and nonsignificant under the frozen exact joint test (p=0.1988095238095238).",
+      "claim_id": "NEUROSPHERE_ISOTOPE",
+      "status": "VALID_MIXED_NULL"
+    },
+    {
+      "claim": "Frozen DepMap-derived reliability weights transported at gene level in 71 genes (rho=0.6032900004412324), while pathway-level RNA-protein concordance was strongly pathway-dependent and weighting did not yield universal gain.",
+      "claim_id": "CPTAC_RNA_PROTEIN",
+      "status": "VALID_PATHWAY_DEPENDENT"
+    },
+    {
+      "claim": "Matched lactate and glutamate orderings transported descriptively across three models (rho=1; exact p=1/3), with a severe n=3 ceiling.",
+      "claim_id": "XENOGRAFT_TRANSPORTABILITY",
+      "status": "VALID_DESCRIPTIVE_SEVERE_N3"
+    },
+    {
+      "claim": "The frozen patient-blocked spatial endpoint was null and opposite the expected direction (effect=-0.1552628978138; spatial-null p=0.2979702029797; exact sign-flip p=0.5).",
+      "claim_id": "SPATIAL_ASSOCIATION",
+      "status": "VALID_NULL_OPPOSITE_DIRECTION"
+    },
+    {
+      "claim": "All 42 sample-specific optimization problems met the prespecified tolerance-based zero-solution classification (zero feasible; solver-reported maximum biomass <=1e-10); this is not an exact-optimum proof. All 42 saved nonzero METAFlux vectors were primally infeasible at 1e-8.",
+      "claim_id": "NUMERICAL_VALIDITY",
+      "status": "VALID_TOLERANCE_CLASSIFICATION_AND_FAILURE_FIXTURE"
+    },
+    {
+      "claim": "The neurometbench-ref 1.0.1 source, wheel, public regression suite, claim firewall, and patient-aware statistical core reproduce from source-excluded installations.",
+      "claim_id": "REFERENCE_SOFTWARE",
+      "status": "VALID_REPRODUCIBLE_IMPLEMENTATION"
+    }
+  ],
+  "project": "NeuroMetBench",
+  "release": "Reference Implementation v1.0.1",
+  "scope": "Patient-aware claim-admissibility auditing for transcript-derived metabolic inference in glioblastoma."
+}

@@ -1,0 +1,11 @@
+{
+  "sample_count": 42,
+  "all_zero_vectors_feasible": true,
+  "all_highs_lp_solves_optimal": true,
+  "all_solver_reported_maximum_biomass_le_1e_10": true,
+  "all_tolerance_based_zero_classifications_passed": true,
+  "exact_unique_optimum_proven": false,
+  "exact_unique_optimum_proven_count": 0,
+  "biomass_tolerance": 1e-10,
+  "interpretation": "The threshold classification is numerical only. It does not establish that the true maximum biomass is nonpositive and therefore does not prove that zero is the exact unique QP optimum."
+}

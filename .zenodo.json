@@ -1,0 +1,21 @@
+{
+  "title": "NeuroMetBench",
+  "upload_type": "software",
+  "description": "Corrected v1.0.1 reference implementation for patient-aware validation and numerical auditing of transcript-derived metabolic inference.",
+  "creators": [
+    {
+      "name": "Bitar, Abdsalam",
+      "orcid": "0009-0009-9517-636X"
+    }
+  ],
+  "version": "1.0.1",
+  "license": "MIT",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/build33Mercury/NeuroMetBench",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ],
+  "doi": "10.5281/zenodo.21847978"
+}

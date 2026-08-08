@@ -1,0 +1,5 @@
+LICENSE SCOPE
+
+The MIT License applies to NeuroMetBench-authored software and documentation in this release, including the neurometbench-ref 1.0.1 source tree, wheel, tests, environment specification, verification scripts, and documentation authored by Abdsalam Bitar.
+
+Third-party datasets, dependencies, source-study supplements, and separately governed materials retain their original terms and are not relicensed by this repository.

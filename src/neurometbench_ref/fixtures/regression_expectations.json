@@ -1,0 +1,37 @@
+{
+  "human_isotope": {
+    "A_primary_exact_p": 0.3333333333333333,
+    "A_primary_n_patients": 3,
+    "A_primary_rho": 1.0
+  },
+  "cptac_rna_protein": {
+    "matched_patients": 99,
+    "transport_genes": 71,
+    "transport_permutation_p": 9.999000099990002e-05,
+    "transport_rho": 0.6032900004412324,
+    "weights_refit": false
+  },
+  "xenograft_transportability": {
+    "exact_p": 0.3333333333333333,
+    "matched_glutamate_rho": 1.0,
+    "matched_lactate_rho": 1.0,
+    "n_models": 3
+  },
+  "spatial_association": {
+    "exact_sign_flip_p": 0.5,
+    "expected_direction_supported": false,
+    "n_patients": 2,
+    "primary_effect": -0.1552628978138,
+    "spatial_null_p": 0.2979702029797
+  },
+  "numerical_validity": {
+    "clarabel_feasible_representatives": 6,
+    "infeasible_flux_columns": 42,
+    "samples": 42,
+    "tolerance_based_zero_classifications": 42,
+    "exact_unique_optimum_proven_count": 0
+  },
+  "neurosphere_isotope": {
+    "joint_exact_p": 0.1988095238095238
+  }
+}

@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Please cite the accompanying NeuroMetBench article and corrected software release."
+title: "neurometbench-ref"
+version: 1.0.1
+date-released: "2026-08-08"
+doi: "10.5281/zenodo.21847978"
+repository-code: "https://github.com/build33Mercury/NeuroMetBench"
+authors:
+  - family-names: "Bitar"
+    given-names: "Abdsalam"
+    orcid: "https://orcid.org/0009-0009-9517-636X"
