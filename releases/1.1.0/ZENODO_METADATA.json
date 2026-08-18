@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "title": "NeuroMetBench: External Validation and Final Scientific Authority",
+    "upload_type": "software",
+    "description": "Frozen post-development external-validation scientific authority, manuscript source, figures, result tables, and forensic audit receipts.",
+    "creators": [
+      {
+        "name": "Bitar, Abdsalam",
+        "affiliation": "Independent Researcher, Amman, Jordan",
+        "orcid": "0009-0009-9517-636X"
+      }
+    ],
+    "version": "1.1.0",
+    "license": "mit",
+    "keywords": [
+      "Neuroinformatics",
+      "metabolic inference",
+      "glioblastoma",
+      "proteogenomics",
+      "reproducibility",
+      "benchmarking"
+    ],
+    "related_identifiers": [
+      {
+        "identifier": "https://github.com/build33Mercury/NeuroMetBench/releases/tag/v1.1.0",
+        "relation": "isSupplementTo",
+        "resource_type": "software"
+      }
+    ]
+  }
+}
