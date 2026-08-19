@@ -1,35 +1,42 @@
-# NeuroMetBench Reference Implementation v1.0.1
+# NeuroMetBench
 
-NeuroMetBench is a patient-aware validation and numerical-auditing framework for transcript-derived metabolic inference in glioblastoma. Version 1.0.1 is a corrective maintenance release that narrows the numerical zero-solution terminology and makes the complete public source/test state reproducible. It does not change the biological or statistical result values reported by the benchmark.
+NeuroMetBench is a patient-aware evaluation framework for transcript-derived metabolic inference. It separates biological sampling-unit validity, cross-modal concordance, development-to-external transport, comparator compatibility, missingness, multiplicity, and numerical admissibility rather than collapsing heterogeneous tasks into a single leaderboard.
 
-## Important v1.0.1 correction
+## Current scientific release
 
-A solver-reported maximum biomass at or below a positive tolerance is now treated only as a **tolerance-based zero-solution classification**. It is **not** treated as proof that the true maximum biomass is nonpositive and therefore is not an exact proof that zero is the unique QP optimum. The independent result that all 42 archived nonzero METAFlux vectors failed the prespecified `1e-8` primal-feasibility criterion is unchanged.
+**v2.0.0** is the manuscript-facing scientific reproducibility release for:
 
-## Contents
+**NeuroMetBench: Patient-Aware Evaluation of Transcript-Derived Metabolic Inference Across Glioma and External Proteogenomic Cohorts**
 
-- `src/neurometbench_ref/` - complete source tree
-- `tests/` - complete public regression suite (15 tests)
-- `dist/` - version-specific pure-Python wheel
-- `verification/` - independent release assertions and verification record
-- `environment.yml` - frozen dependency specification
-- `CITATION.cff` - software citation metadata
-- `SHA256SUMS.txt` - release-file checksums
+The v2.0.0 release includes the revised manuscript, publication figures and source tables, patient-level derived score authorities for the primary LSCC and CNS analyses, machine-readable claim/adverse/limitation ledgers, and clean-room verification scripts.
 
-## Installation
+Headline results include the held-out LSCC serine de novo primary (n=89, Spearman rho=0.9071), development-disjoint CNS/high-grade-glioma generalization (n=90, rho=0.6266), a 33-cell development-to-external transport analysis with three sign reversals, and a narrowed numerical compatibility result. The frozen broad calibration criteria were not fully met, so the project does not use `reliability-calibrated` as a scientific claim.
+
+## Software component
+
+The reusable `neurometbench-ref` software component remains **v1.0.1**. The v2.0.0 number refers to the scientific repository/reproducibility release, not a change to that software package API.
+
+## Reproduction
+
+Download the `NeuroMetBench_v2.0.0_reproducibility_release.zip` asset from the GitHub v2.0.0 Release, verify the accompanying SHA-256 receipt, extract it, and run:
 
 ```bash
-python -m pip install --no-cache-dir dist/neurometbench_ref-1.0.1-py3-none-any.whl
-neurometbench-ref self-test
-python -m pytest -q
+python reproducibility/verify_scientific_results.py
+python -m pip install -r reproducibility/requirements.txt
+python reproducibility/verify_exact_resampling.py
+python reproducibility/reproduce_figures.py
 ```
 
-The public test suite is expected to report **15 passed**.
+The exact-resampling verifier recreates the two primary 100,000-permutation tests and 10,000-patient-bootstrap intervals from the archived patient-level derived scores.
 
-## Scientific scope
+## Scientific boundaries
 
-The software enforces patient/equal-patient inference, exact finite-sample procedures, pathway-coverage checks, primal-feasibility auditing, tolerance-based numerical classification, and artifact-use safeguards. It is not a metabolic-flux predictor, does not establish transcript-derived scores as measured or absolute flux, and is not intended for clinical decision support.
+NeuroMetBench is not a flux predictor and does not claim measured or absolute flux, universal method superiority, an untouched holdout, public preregistration, full empirical calibration, or GBM-only generalization for the CNS cohort. Technical non-execution remains separate from biological discordance.
 
-## Archive
+## Historical releases
 
-The corrected v1.0.1 release is archived under the version-specific Zenodo DOI [10.5281/zenodo.21847978](https://doi.org/10.5281/zenodo.21847978). The historical v1.0.0 archive remains unchanged.
+Historical v1.0.0, v1.0.1, and v1.1.0 artifacts are preserved and are not overwritten by v2.0.0.
+
+## License
+
+Repository-authored software materials are distributed under the MIT License. Third-party data remain under their source-specific terms and are not redistributed where those terms prohibit redistribution.
