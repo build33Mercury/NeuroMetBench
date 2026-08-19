@@ -1,0 +1,66 @@
+name: Publish NeuroMetBench v2.0.0
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  verify-and-release:
+    if: contains(github.event.head_commit.message, 'Publish NeuroMetBench v2.0.0')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Reassemble and verify committed source archive
+        run: |
+          cat releases/2.0.0/source_parts/source.b64.part* > /tmp/NeuroMetBench_v2.0.0_release_source.b64
+          base64 -d /tmp/NeuroMetBench_v2.0.0_release_source.b64 > /tmp/NeuroMetBench_v2.0.0_release_source.zip
+          echo '857cad65c800c07dda87214e3df2713e952a8f75a067bee5be9ad756f1eecaaf  /tmp/NeuroMetBench_v2.0.0_release_source.zip' | sha256sum -c -
+      - name: Extract immutable release source
+        run: |
+          rm -rf /tmp/neurometbench-v2
+          mkdir -p /tmp/neurometbench-v2
+          unzip -q /tmp/NeuroMetBench_v2.0.0_release_source.zip -d /tmp/neurometbench-v2
+          test -d /tmp/neurometbench-v2/NeuroMetBench_v2.0.0
+          cd /tmp/neurometbench-v2/NeuroMetBench_v2.0.0
+          sha256sum -c SHA256SUMS.txt
+      - name: Install pinned clean-room dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r /tmp/neurometbench-v2/NeuroMetBench_v2.0.0/reproducibility/requirements.txt
+      - name: Recompute scientific authorities
+        working-directory: /tmp/neurometbench-v2/NeuroMetBench_v2.0.0
+        run: |
+          python reproducibility/verify_scientific_results.py
+          python reproducibility/verify_exact_resampling.py
+      - name: Reconstruct figures from source tables
+        working-directory: /tmp/neurometbench-v2/NeuroMetBench_v2.0.0
+        run: |
+          python reproducibility/reproduce_figures.py
+          test -s reproduced_figures/Figure3_phase18_primary_scatter.svg
+          test -s reproduced_figures/Figure4_development_external_transport.svg
+          test -s reproduced_figures/Figure6_CNS_generalization.svg
+      - name: Build verified publication archive
+        run: |
+          cd /tmp/neurometbench-v2
+          zip -X -q -r NeuroMetBench_v2.0.0_reproducibility_release.zip NeuroMetBench_v2.0.0
+          sha256sum NeuroMetBench_v2.0.0_reproducibility_release.zip > RELEASE_ASSET_SHA256.txt
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view v2.0.0 >/dev/null 2>&1; then
+            echo 'GitHub release v2.0.0 already exists.'
+            exit 1
+          fi
+          gh release create v2.0.0 \
+            /tmp/neurometbench-v2/NeuroMetBench_v2.0.0_reproducibility_release.zip \
+            /tmp/neurometbench-v2/RELEASE_ASSET_SHA256.txt \
+            --target "${GITHUB_SHA}" \
+            --title 'NeuroMetBench v2.0.0' \
+            --notes-file releases/2.0.0/RELEASE_NOTES.md
