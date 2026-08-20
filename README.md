@@ -8,7 +8,7 @@ A **v2.0.0 scientific reproducibility release candidate** has been prepared for:
 
 **NeuroMetBench: Patient-Aware Evaluation of Transcript-Derived Metabolic Inference Across Glioma and External Proteogenomic Cohorts**
 
-The candidate package includes the revised manuscript, publication figures and source tables, patient-level derived score authorities for the primary LSCC and CNS analyses, machine-readable claim/adverse/limitation ledgers, and clean-room verification scripts. Public v2.0.0 GitHub Release and Zenodo publication are pending the final archive publication step and must not be cited as complete until those records exist.
+The candidate package includes the revised manuscript, publication figures and source tables, patient-level derived score authorities for the primary LSCC and CNS analyses, machine-readable claim/adverse/limitation ledgers, and clean-room verification scripts. Publication is controlled by the repository's fail-closed clean-room release workflow. v2.0.0 should be cited only after the public GitHub Release and corresponding archival record exist.
 
 Headline results include the held-out LSCC serine de novo primary (n=89, Spearman rho=0.9071), development-disjoint CNS/high-grade-glioma generalization (n=90, rho=0.6266), a 33-cell development-to-external transport analysis with three sign reversals, and a narrowed numerical compatibility result. The frozen broad calibration criteria were not fully met, so the project does not use `reliability-calibrated` as a scientific claim.
 
