@@ -1,0 +1,31 @@
+name: Repair NeuroMetBench v2.0.0 checksum asset
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  repair-checksum-asset:
+    if: contains(github.event.head_commit.message, 'Repair NeuroMetBench v2.0.0 checksum asset')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Attach frozen checksum receipt to existing v2.0.0 release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          printf '%s  %s\n' \
+            '63947a8215be91402570a4c724f492242e2a972ca3665fd24271ae3da9eea174' \
+            'NeuroMetBench_v2.0.0_reproducibility_release.zip' \
+            > /tmp/RELEASE_ASSET_SHA256.txt
+          gh release view v2.0.0
+          gh release upload v2.0.0 /tmp/RELEASE_ASSET_SHA256.txt --clobber
+      - name: Trigger unauthenticated publication verification
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit --allow-empty -m 'Verify NeuroMetBench v2.0.0 publication'
+          git push
