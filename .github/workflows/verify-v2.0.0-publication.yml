@@ -1,0 +1,280 @@
+name: Verify NeuroMetBench v2.0.0 public publication
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  verify-publication:
+    if: contains(github.event.head_commit.message, 'Verify NeuroMetBench v2.0.0 publication')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify public GitHub and Zenodo records
+        env:
+          EXPECTED_RELEASE_SHA256: 63947a8215be91402570a4c724f492242e2a972ca3665fd24271ae3da9eea174
+          EXPECTED_RELEASE_NAME: NeuroMetBench_v2.0.0_reproducibility_release.zip
+          EXPECTED_TAG: v2.0.0
+          EXPECTED_TAG_COMMIT: 66c9b0e507b914619a5658987c3e58b53f4e76f6
+          ZENODO_CONCEPT_RECID: '21830887'
+          ZENODO_CONCEPT_DOI: 10.5281/zenodo.21830887
+          EXPECTED_TITLE: "NeuroMetBench: Patient-Aware Evaluation of Transcript-Derived Metabolic Inference Across Glioma and External Proteogenomic Cohorts"
+        run: |
+          python - <<'PY'
+          import datetime as dt
+          import hashlib
+          import json
+          import os
+          import pathlib
+          import time
+          import urllib.parse
+          import urllib.request
+
+          out_path = pathlib.Path('releases/2.0.0/PUBLICATION_VERIFICATION.json')
+          out_path.parent.mkdir(parents=True, exist_ok=True)
+
+          expected_sha = os.environ['EXPECTED_RELEASE_SHA256'].lower()
+          expected_name = os.environ['EXPECTED_RELEASE_NAME']
+          expected_tag = os.environ['EXPECTED_TAG']
+          expected_tag_commit = os.environ['EXPECTED_TAG_COMMIT']
+          concept_recid = os.environ['ZENODO_CONCEPT_RECID']
+          concept_doi = os.environ['ZENODO_CONCEPT_DOI']
+          expected_title = os.environ['EXPECTED_TITLE']
+          ua = 'NeuroMetBench-Public-Verification/2.0.0'
+
+          def request_bytes(url, attempts=4):
+              last = None
+              for attempt in range(attempts):
+                  try:
+                      req = urllib.request.Request(url, headers={'User-Agent': ua})
+                      with urllib.request.urlopen(req, timeout=90) as r:
+                          return r.read(), int(getattr(r, 'status', 200)), r.geturl()
+                  except Exception as exc:
+                      last = exc
+                      if attempt + 1 < attempts:
+                          time.sleep(2 ** attempt)
+              raise last
+
+          def request_json(url):
+              raw, status, final_url = request_bytes(url)
+              return json.loads(raw.decode('utf-8')), status, final_url
+
+          def sha256_bytes(raw):
+              return hashlib.sha256(raw).hexdigest()
+
+          def normalized_version(value):
+              value = str(value or '').strip().lower()
+              if value.startswith('v'):
+                  value = value[1:]
+              return value
+
+          receipt = {
+              'schema': 'NeuroMetBench_publication_verification_v1',
+              'checked_at_utc': dt.datetime.now(dt.timezone.utc).isoformat(),
+              'scientific_content_modified': False,
+              'expected': {
+                  'tag': expected_tag,
+                  'tag_commit': expected_tag_commit,
+                  'release_filename': expected_name,
+                  'release_sha256': expected_sha,
+                  'zenodo_concept_doi': concept_doi,
+              },
+              'github': {},
+              'zenodo': {},
+              'overall_status': 'PARTIAL',
+              'phase15_can_close': False,
+          }
+
+          # GitHub verification is deliberately unauthenticated.
+          try:
+              release_api = f'https://api.github.com/repos/build33Mercury/NeuroMetBench/releases/tags/{expected_tag}'
+              release, status, _ = request_json(release_api)
+              assets = release.get('assets') or []
+              asset_map = {a.get('name'): a for a in assets if a.get('name')}
+              release_asset = asset_map.get(expected_name)
+              checksum_asset = asset_map.get('RELEASE_ASSET_SHA256.txt')
+              github = {
+                  'public_release_api_status': status,
+                  'release_id': release.get('id'),
+                  'tag_name': release.get('tag_name'),
+                  'target_commitish': release.get('target_commitish'),
+                  'html_url': release.get('html_url'),
+                  'release_object_verified': release.get('tag_name') == expected_tag,
+                  'release_asset_listed': release_asset is not None,
+                  'checksum_asset_listed': checksum_asset is not None,
+                  'release_asset_sha256': None,
+                  'release_asset_hash_match': False,
+                  'checksum_receipt_match': False,
+              }
+              if release_asset:
+                  raw, _, final_url = request_bytes(release_asset['browser_download_url'])
+                  got = sha256_bytes(raw)
+                  github['release_asset_sha256'] = got
+                  github['release_asset_size_bytes'] = len(raw)
+                  github['release_asset_download_final_url'] = final_url
+                  github['release_asset_hash_match'] = got == expected_sha
+              if checksum_asset:
+                  raw, _, _ = request_bytes(checksum_asset['browser_download_url'])
+                  text = raw.decode('utf-8', errors='replace').strip()
+                  github['checksum_receipt_text'] = text
+                  github['checksum_receipt_match'] = expected_sha in text and expected_name in text
+              github['status'] = 'PASS' if all([
+                  github['release_object_verified'],
+                  github['release_asset_listed'],
+                  github['checksum_asset_listed'],
+                  github['release_asset_hash_match'],
+                  github['checksum_receipt_match'],
+              ]) else 'PARTIAL'
+              receipt['github'] = github
+          except Exception as exc:
+              receipt['github'] = {
+                  'status': 'PARTIAL',
+                  'error': f'{type(exc).__name__}: {exc}',
+                  'note': 'Public GitHub verification used no Authorization header.',
+              }
+
+          # Zenodo verification is deliberately unauthenticated.
+          try:
+              query = urllib.parse.urlencode({
+                  'q': f'conceptrecid:{concept_recid}',
+                  'all_versions': 'true',
+                  'sort': '-mostrecent',
+                  'size': '25',
+              })
+              zenodo_url = f'https://zenodo.org/api/records?{query}'
+              data, status, _ = request_json(zenodo_url)
+              hits = ((data.get('hits') or {}).get('hits') or []) if isinstance(data, dict) else []
+              candidate = None
+              for record in hits:
+                  metadata = record.get('metadata') or {}
+                  if normalized_version(metadata.get('version')) == '2.0.0':
+                      candidate = record
+                      break
+
+              zenodo = {
+                  'public_search_api_status': status,
+                  'concept_doi': concept_doi,
+                  'v2_record_found': candidate is not None,
+                  'record_id': None,
+                  'doi': None,
+                  'title_match': False,
+                  'version_match': False,
+                  'creator_match': False,
+                  'license_match': False,
+                  'exact_release_archive_found': False,
+                  'exact_release_archive_sha256': None,
+                  'exact_release_archive_hash_match': False,
+              }
+
+              if candidate:
+                  metadata = candidate.get('metadata') or {}
+                  zenodo['record_id'] = candidate.get('id')
+                  zenodo['doi'] = candidate.get('doi') or ((candidate.get('pids') or {}).get('doi') or {}).get('identifier')
+                  zenodo['title'] = metadata.get('title')
+                  zenodo['version'] = metadata.get('version')
+                  zenodo['title_match'] = metadata.get('title') == expected_title
+                  zenodo['version_match'] = normalized_version(metadata.get('version')) == '2.0.0'
+
+                  creators = metadata.get('creators') or []
+                  creator_text = json.dumps(creators, ensure_ascii=False).lower()
+                  zenodo['creator_match'] = 'bitar' in creator_text and 'abdsalam' in creator_text
+
+                  license_obj = metadata.get('license')
+                  if isinstance(license_obj, dict):
+                      license_text = json.dumps(license_obj, ensure_ascii=False).lower()
+                  else:
+                      license_text = str(license_obj or '').lower()
+                  zenodo['license'] = license_obj
+                  zenodo['license_match'] = 'mit' in license_text
+
+                  files_obj = candidate.get('files') or []
+                  if isinstance(files_obj, dict):
+                      if isinstance(files_obj.get('entries'), dict):
+                          files = []
+                          for key, value in files_obj['entries'].items():
+                              entry = dict(value or {})
+                              entry.setdefault('key', key)
+                              files.append(entry)
+                      elif isinstance(files_obj.get('entries'), list):
+                          files = files_obj['entries']
+                      else:
+                          files = []
+                  elif isinstance(files_obj, list):
+                      files = files_obj
+                  else:
+                      files = []
+
+                  zenodo['files'] = [
+                      {
+                          'key': f.get('key') or f.get('filename'),
+                          'checksum': f.get('checksum'),
+                          'size': f.get('size') or f.get('filesize'),
+                      }
+                      for f in files
+                  ]
+                  target = None
+                  for f in files:
+                      if (f.get('key') or f.get('filename')) == expected_name:
+                          target = f
+                          break
+                  zenodo['exact_release_archive_found'] = target is not None
+                  if target:
+                      links = target.get('links') or {}
+                      download_url = links.get('content') or links.get('download') or links.get('self')
+                      if download_url:
+                          raw, _, final_url = request_bytes(download_url)
+                          got = sha256_bytes(raw)
+                          zenodo['exact_release_archive_sha256'] = got
+                          zenodo['exact_release_archive_size_bytes'] = len(raw)
+                          zenodo['exact_release_archive_download_final_url'] = final_url
+                          zenodo['exact_release_archive_hash_match'] = got == expected_sha
+
+              zenodo['metadata_status'] = 'PASS' if all([
+                  zenodo['v2_record_found'],
+                  zenodo['title_match'],
+                  zenodo['version_match'],
+                  zenodo['creator_match'],
+                  zenodo['license_match'],
+              ]) else 'PARTIAL'
+              zenodo['status'] = 'PASS' if all([
+                  zenodo['metadata_status'] == 'PASS',
+                  zenodo['exact_release_archive_found'],
+                  zenodo['exact_release_archive_hash_match'],
+              ]) else 'PARTIAL'
+              receipt['zenodo'] = zenodo
+          except Exception as exc:
+              receipt['zenodo'] = {
+                  'status': 'PARTIAL',
+                  'concept_doi': concept_doi,
+                  'error': f'{type(exc).__name__}: {exc}',
+                  'note': 'Public Zenodo verification used no Authorization header.',
+              }
+
+          receipt['phase15_can_close'] = (
+              receipt.get('github', {}).get('status') == 'PASS'
+              and receipt.get('zenodo', {}).get('status') == 'PASS'
+          )
+          receipt['overall_status'] = 'PASS' if receipt['phase15_can_close'] else 'PARTIAL'
+          receipt['interpretation'] = (
+              'Phase 15 public archive gate satisfied.' if receipt['phase15_can_close']
+              else 'Phase 15 remains open until both the public GitHub release asset and exact Zenodo v2.0.0 archive are verified.'
+          )
+          out_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          print(json.dumps(receipt, indent=2, sort_keys=True))
+          PY
+
+      - name: Commit publication verification receipt
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add releases/2.0.0/PUBLICATION_VERIFICATION.json
+          if git diff --cached --quiet; then
+            echo 'Verification receipt unchanged.'
+            exit 0
+          fi
+          git commit -m 'Record NeuroMetBench v2.0.0 publication verification'
+          git push
