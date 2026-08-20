@@ -1,0 +1,61 @@
+{
+  "checked_at_utc": "2026-08-20T19:18:56.117721+00:00",
+  "expected": {
+    "release_filename": "NeuroMetBench_v2.0.0_reproducibility_release.zip",
+    "release_sha256": "63947a8215be91402570a4c724f492242e2a972ca3665fd24271ae3da9eea174",
+    "tag": "v2.0.0",
+    "tag_commit": "66c9b0e507b914619a5658987c3e58b53f4e76f6",
+    "zenodo_concept_doi": "10.5281/zenodo.21830887"
+  },
+  "github": {
+    "checksum_asset_listed": false,
+    "checksum_receipt_match": false,
+    "html_url": "https://github.com/build33Mercury/NeuroMetBench/releases/tag/v2.0.0",
+    "public_release_api_status": 200,
+    "release_asset_download_final_url": "https://release-assets.githubusercontent.com/github-production-release-asset/1327516423/8befd346-5f34-40c8-9a45-44606915426c?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-20T20%3A12%3A02Z&rscd=attachment%3B+filename%3DNeuroMetBench_v2.0.0_reproducibility_release.zip&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-20T19%3A11%3A22Z&ske=2026-08-20T20%3A12%3A02Z&sks=b&skv=2018-11-09&sig=Hoxibvx4gK2Pr0JXM6onsIwUohLYxTQKr11e0WMnHNQ%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4NzI1MzgzNiwibmJmIjoxNzg3MjUzNTM2LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.JzFv4mzlePeWA6xEHMIB0nKJpCfBml860_G0o2F4Az4&response-content-disposition=attachment%3B%20filename%3DNeuroMetBench_v2.0.0_reproducibility_release.zip&response-content-type=application%2Foctet-stream",
+    "release_asset_hash_match": true,
+    "release_asset_listed": true,
+    "release_asset_sha256": "63947a8215be91402570a4c724f492242e2a972ca3665fd24271ae3da9eea174",
+    "release_asset_size_bytes": 6427011,
+    "release_id": 373695936,
+    "release_object_verified": true,
+    "status": "PARTIAL",
+    "tag_name": "v2.0.0",
+    "target_commitish": "main"
+  },
+  "interpretation": "Phase 15 remains open until both the public GitHub release asset and exact Zenodo v2.0.0 archive are verified.",
+  "overall_status": "PARTIAL",
+  "phase15_can_close": false,
+  "schema": "NeuroMetBench_publication_verification_v1",
+  "scientific_content_modified": false,
+  "zenodo": {
+    "concept_doi": "10.5281/zenodo.21830887",
+    "creator_match": true,
+    "doi": "10.5281/zenodo.22029697",
+    "exact_release_archive_download_final_url": "https://zenodo.org/api/records/22029697/files/NeuroMetBench_v2.0.0_reproducibility_release.zip/content",
+    "exact_release_archive_found": true,
+    "exact_release_archive_hash_match": true,
+    "exact_release_archive_sha256": "63947a8215be91402570a4c724f492242e2a972ca3665fd24271ae3da9eea174",
+    "exact_release_archive_size_bytes": 6427011,
+    "files": [
+      {
+        "checksum": "md5:9d96c316c152ac578927fe5a4407b744",
+        "key": "NeuroMetBench_v2.0.0_reproducibility_release.zip",
+        "size": 6427011
+      }
+    ],
+    "license": {
+      "id": "mit-license"
+    },
+    "license_match": true,
+    "metadata_status": "PASS",
+    "public_search_api_status": 200,
+    "record_id": 22029697,
+    "status": "PASS",
+    "title": "NeuroMetBench: Patient-Aware Evaluation of Transcript-Derived Metabolic Inference Across Glioma and External Proteogenomic Cohorts",
+    "title_match": true,
+    "v2_record_found": true,
+    "version": "2.0.0",
+    "version_match": true
+  }
+}
