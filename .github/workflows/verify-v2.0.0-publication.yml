@@ -1,3 +1,4 @@
+# verification trigger revision 2
 name: Verify NeuroMetBench v2.0.0 public publication
 
 on:
@@ -89,7 +90,6 @@ jobs:
               'phase15_can_close': False,
           }
 
-          # GitHub verification is deliberately unauthenticated.
           try:
               release_api = f'https://api.github.com/repos/build33Mercury/NeuroMetBench/releases/tags/{expected_tag}'
               release, status, _ = request_json(release_api)
@@ -137,7 +137,6 @@ jobs:
                   'note': 'Public GitHub verification used no Authorization header.',
               }
 
-          # Zenodo verification is deliberately unauthenticated.
           try:
               query = urllib.parse.urlencode({
                   'q': f'conceptrecid:{concept_recid}',
@@ -178,11 +177,9 @@ jobs:
                   zenodo['version'] = metadata.get('version')
                   zenodo['title_match'] = metadata.get('title') == expected_title
                   zenodo['version_match'] = normalized_version(metadata.get('version')) == '2.0.0'
-
                   creators = metadata.get('creators') or []
                   creator_text = json.dumps(creators, ensure_ascii=False).lower()
                   zenodo['creator_match'] = 'bitar' in creator_text and 'abdsalam' in creator_text
-
                   license_obj = metadata.get('license')
                   if isinstance(license_obj, dict):
                       license_text = json.dumps(license_obj, ensure_ascii=False).lower()
@@ -190,7 +187,6 @@ jobs:
                       license_text = str(license_obj or '').lower()
                   zenodo['license'] = license_obj
                   zenodo['license_match'] = 'mit' in license_text
-
                   files_obj = candidate.get('files') or []
                   if isinstance(files_obj, dict):
                       if isinstance(files_obj.get('entries'), dict):
@@ -207,7 +203,6 @@ jobs:
                       files = files_obj
                   else:
                       files = []
-
                   zenodo['files'] = [
                       {
                           'key': f.get('key') or f.get('filename'),
