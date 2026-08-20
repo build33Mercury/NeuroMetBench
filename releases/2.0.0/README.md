@@ -1,12 +1,26 @@
-# NeuroMetBench v2.0.0 scientific reproducibility release candidate
+# NeuroMetBench v2.0.0 scientific reproducibility release
 
-NeuroMetBench is a patient-aware evaluation architecture for transcript-derived metabolic inference. This directory records the prepared manuscript-facing v2.0.0 scientific snapshot. The public GitHub Release asset and version-specific Zenodo record are not yet published and must not be cited as complete until those records exist.
+NeuroMetBench is a patient-aware evaluation architecture for transcript-derived metabolic inference. This directory records the manuscript-facing v2.0.0 scientific snapshot.
 
 ## Article identity
 
 **NeuroMetBench: Patient-Aware Evaluation of Transcript-Derived Metabolic Inference Across Glioma and External Proteogenomic Cohorts**
 
 Author: Abdsalam Bitar, Independent Researcher, Amman, Jordan. ORCID: 0009-0009-9517-636X.
+
+## Public archive identity
+
+GitHub Release: https://github.com/build33Mercury/NeuroMetBench/releases/tag/v2.0.0
+
+Zenodo version DOI: https://doi.org/10.5281/zenodo.22029697
+
+Zenodo concept DOI: https://doi.org/10.5281/zenodo.21830887
+
+Archive: `NeuroMetBench_v2.0.0_reproducibility_release.zip`
+
+SHA256: `63947a8215be91402570a4c724f492242e2a972ca3665fd24271ae3da9eea174`
+
+The GitHub and Zenodo archive copies were independently retrieved through public unauthenticated endpoints and verified to match this SHA256 exactly.
 
 ## Locked headline results
 
@@ -23,4 +37,4 @@ This release does not claim measured or absolute metabolic flux, universal metho
 
 ## Publication status
 
-The complete v2.0.0 reproducibility archive has been built and clean-room verified locally. GitHub Release publication and Zenodo version publication remain pending. Historical releases are preserved and are not overwritten.
+The v2.0.0 reproducibility archive is published on GitHub and Zenodo. Historical releases are preserved and are not overwritten.

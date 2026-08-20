@@ -2,7 +2,10 @@ cff-version: 1.2.0
 message: "Please cite the NeuroMetBench v2.0.0 scientific reproducibility release and the accompanying article when available."
 title: "NeuroMetBench: Patient-Aware Evaluation of Transcript-Derived Metabolic Inference Across Glioma and External Proteogenomic Cohorts"
 version: 2.0.0
+doi: 10.5281/zenodo.22029697
+date-released: 2026-08-20
 repository-code: "https://github.com/build33Mercury/NeuroMetBench"
+url: "https://doi.org/10.5281/zenodo.22029697"
 authors:
   - family-names: "Bitar"
     given-names: "Abdsalam"

@@ -4,17 +4,26 @@ NeuroMetBench is a patient-aware evaluation framework for transcript-derived met
 
 ## Current repository status
 
-A **v2.0.0 scientific reproducibility release candidate** has been prepared for:
+The **v2.0.0 scientific reproducibility release** is publicly available for:
 
 **NeuroMetBench: Patient-Aware Evaluation of Transcript-Derived Metabolic Inference Across Glioma and External Proteogenomic Cohorts**
 
-The candidate package includes the revised manuscript, publication figures and source tables, patient-level derived score authorities for the primary LSCC and CNS analyses, machine-readable claim/adverse/limitation ledgers, and clean-room verification scripts. Publication is controlled by the repository's fail-closed clean-room release workflow. v2.0.0 should be cited only after the public GitHub Release and corresponding archival record exist.
+GitHub Release: https://github.com/build33Mercury/NeuroMetBench/releases/tag/v2.0.0
+
+Zenodo version DOI: https://doi.org/10.5281/zenodo.22029697
+
+Zenodo concept DOI: https://doi.org/10.5281/zenodo.21830887
+
+Frozen reproducibility archive SHA256:
+`63947a8215be91402570a4c724f492242e2a972ca3665fd24271ae3da9eea174`
+
+The GitHub and Zenodo copies of `NeuroMetBench_v2.0.0_reproducibility_release.zip` were independently retrieved through unauthenticated public endpoints and verified to match this SHA256 exactly.
 
 Headline results include the held-out LSCC serine de novo primary (n=89, Spearman rho=0.9071), development-disjoint CNS/high-grade-glioma generalization (n=90, rho=0.6266), a 33-cell development-to-external transport analysis with three sign reversals, and a narrowed numerical compatibility result. The frozen broad calibration criteria were not fully met, so the project does not use `reliability-calibrated` as a scientific claim.
 
 ## Software component
 
-The reusable `neurometbench-ref` software component remains **v1.0.1**. The v2.0.0 number refers to the scientific repository/reproducibility release, not a change to that software package API.
+The reusable `neurometbench-ref` software component remains **v1.0.1**. The v2.0.0 number refers to the scientific repository and reproducibility release, not a change to that software package API.
 
 ## Scientific boundaries
 
@@ -22,7 +31,7 @@ NeuroMetBench is not a flux predictor and does not claim measured or absolute fl
 
 ## Historical releases
 
-Historical v1.0.0, v1.0.1, and v1.1.0 artifacts are preserved and are not overwritten by the v2.0.0 release candidate.
+Historical v1.0.0, v1.0.1, and v1.1.0 artifacts are preserved and are not overwritten by v2.0.0.
 
 ## License
 

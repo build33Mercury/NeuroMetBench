@@ -1,6 +1,6 @@
 # NeuroMetBench v2.0.0
 
-Major scientific reproducibility release candidate for the rebuilt NeuroMetBench manuscript.
+Major scientific reproducibility release for the rebuilt NeuroMetBench manuscript.
 
 ## Added
 
@@ -23,6 +23,12 @@ Major scientific reproducibility release candidate for the rebuilt NeuroMetBench
 - Reaction-order swaps are not detected by the frozen primal-feasibility gate.
 - ACT03 and ACT05 are algorithmically dependent through GSVA.
 
+## Archive identity
+
+Zenodo version DOI: https://doi.org/10.5281/zenodo.22029697
+
+Archive SHA256: `63947a8215be91402570a4c724f492242e2a972ca3665fd24271ae3da9eea174`
+
 ## Versioning
 
-This is a new scientific release candidate. It does not rewrite or replace historical v1.0.0, v1.0.1, or v1.1.0 artifacts. The `neurometbench-ref` software component remains version 1.0.1 unless separately changed in a future software release.
+This is a new scientific release. It does not rewrite or replace historical v1.0.0, v1.0.1, or v1.1.0 artifacts. The `neurometbench-ref` software component remains version 1.0.1 unless separately changed in a future software release.
