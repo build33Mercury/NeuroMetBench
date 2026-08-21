@@ -1,7 +1,7 @@
 {
-  "title": "NeuroMetBench: Patient-Aware Evaluation of Transcript-Derived Metabolic Inference Across Glioma and External Proteogenomic Cohorts",
+  "title": "NeuroMetBench: A patient-aware neuroinformatics framework for multi-axis evaluation of transcript-derived metabolic inference in glioma",
   "upload_type": "software",
-  "description": "Scientific reproducibility release for the rebuilt NeuroMetBench study. The release preserves patient-level primary score authorities, publication figures and source tables, machine-readable claim and limitation ledgers, and clean-room verification scripts. It reports external proteogenomic validation, development-to-external transport, simulation and ablation results, numerical compatibility checks, and development-disjoint CNS/high-grade-glioma generalization. Broad reliability calibration was not earned and is not claimed.",
+  "description": "Scientific reproducibility and metadata correction release for version 2.0.1. Frozen scientific results are unchanged from v2.0.0. This version adds parser-independent primary statistical authorities, exact verification, synchronized manuscript/release metadata, and exact software provenance.",
   "creators": [
     {
       "name": "Bitar, Abdsalam",
@@ -9,7 +9,7 @@
       "affiliation": "Independent Researcher, Amman, Jordan"
     }
   ],
-  "version": "2.0.0",
+  "version": "2.0.1",
   "license": "MIT",
   "keywords": [
     "Neuroinformatics",
