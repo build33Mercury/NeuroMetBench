@@ -1,13 +1,22 @@
 cff-version: 1.2.0
-message: "Please cite the NeuroMetBench v2.0.0 scientific reproducibility release and the accompanying article when available."
-title: "NeuroMetBench: Patient-Aware Evaluation of Transcript-Derived Metabolic Inference Across Glioma and External Proteogenomic Cohorts"
-version: 2.0.0
-doi: 10.5281/zenodo.22029697
-date-released: 2026-08-20
+message: "Please cite the NeuroMetBench article and this scientific reproducibility release."
+title: "NeuroMetBench"
+version: 2.0.1
+date-released: "2026-08-21"
+type: software
 repository-code: "https://github.com/build33Mercury/NeuroMetBench"
-url: "https://doi.org/10.5281/zenodo.22029697"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.22036411"
+    description: "Zenodo DOI for version 2.0.1"
 authors:
   - family-names: "Bitar"
     given-names: "Abdsalam"
     orcid: "https://orcid.org/0009-0009-9517-636X"
-    affiliation: "Independent Researcher, Amman, Jordan"
+preferred-citation:
+  type: article
+  title: "NeuroMetBench: A patient-aware neuroinformatics framework for multi-axis evaluation of transcript-derived metabolic inference in glioma"
+  authors:
+    - family-names: "Bitar"
+      given-names: "Abdsalam"
+      orcid: "https://orcid.org/0009-0009-9517-636X"
