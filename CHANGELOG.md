@@ -1,6 +1,17 @@
 # Changelog
 
-## 2.0.0 - release candidate
+## 2.0.1 - 2026-08-21
+
+Documentation and reproducibility correction. Scientific results are unchanged from v2.0.0.
+
+- Synchronized the scientific release title, version, DOI, and repository metadata with the current manuscript identity.
+- Added parser-independent hexadecimal float64 authorities for the LSCC and CNS/HGG primary patient-level analyses.
+- Added exact bit-identity and statistics verification.
+- Changed final figure generation so primary headline statistics are computed from verified authorities rather than supplied as literal annotations.
+- Recorded the exact historical scCellFie 0.6.2 source commit `bad8ea9afcd898c8633dac7d3ab1f83dc086b9b1`.
+- Preserved all v2.0.0 biological endpoints, cohorts, thresholds, results, adverse findings, and claim ceilings unchanged.
+
+## 2.0.0 - 2026-08-20
 
 Major scientific reproducibility release for the rebuilt NeuroMetBench study.
 
@@ -11,9 +22,8 @@ Major scientific reproducibility release for the rebuilt NeuroMetBench study.
 - Added frozen hierarchical simulation and component ablation analyses. Broad reliability calibration was not earned and is not claimed.
 - Narrowed the numerical claim to a primal-feasibility compatibility check at the frozen 1e-3 project threshold.
 - Added development-disjoint CNS/high-grade-glioma generalization with 90 evaluable primary patients.
-- Added rebuilt patient-level figures, machine-readable claim/adverse/limitation ledgers, and clean-room reproduction scripts.
+- Added rebuilt patient-level figures, machine-readable claim, adverse-result, and limitation ledgers, and clean-room reproduction scripts.
 - Preserved adverse findings, including lack of aggregation superiority over PSAT1, batch-structured TCA/OXPHOS evaluability, unsupported CNS OXPHOS, and failure of the primal-feasibility gate to detect reaction-order swaps.
-- Preserved historical v1.0.0, v1.0.1, and v1.1.0 artifacts unchanged.
 
 The reusable `neurometbench-ref` software component remains version 1.0.1. Version 2.0.0 refers to the scientific repository and reproducibility release.
 
