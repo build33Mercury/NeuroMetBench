@@ -9,13 +9,12 @@ Derived-results verification, provenance, and submission-integrity repair. Froze
 - corrected LSCC accounting so 115 to 110 to 91 to 89 is the ordered proteomic path and 108 of 110 is a parallel GDC branch;
 - made the 34-row dependence-aware family primary and retained the inherited 39-row family as a provenance sensitivity;
 - added deterministic retrospective BCa interval sensitivity without changing the canonical percentile intervals;
-- expanded current prior-art, validation-scope, evidence-ceiling, same-gene endpoint, and missing-upstream-pipeline disclosures;
+- expanded current prior-art, validation-scope, evidence-ceiling, same-gene endpoint, and historical-pipeline recovery and remaining raw-source/environment boundary disclosures;
 - replaced the impossible embedded outer-archive hash design with an internal cross-package manifest and detached publication receipt;
-- retained every adverse result and frozen threshold.
-- recovered and hash-locked the historical upstream stage and receipt chain, including public acquisition, comparator, simulation, ablation, numerical, and external-analysis packages;
-- added an independent verifier for all 23 recovered pipeline artifacts while preserving raw-data, platform, and license boundaries.
+- retained every adverse result and frozen threshold;
+- final clean-room hardening vectorizes the frozen-seed primary bootstrap calculation inside figure generation; exact CI values and all 21 PNG/SVG/EPS figure bytes are unchanged, while the reference verification run is substantially faster and less resource-sensitive.
 
-This package verifies supplied derived authorities and preserves the recovered historical computation record. It does not redistribute third-party raw matrices or claim that the historical platform-specific environments and external licenses can be recreated without additional work. Historical releases are not rewritten or retagged.
+This package verifies supplied derived authorities and preserves a hash-locked 25-artifact historical project record tied to the Phase-12 result lock. It does not redistribute third-party raw molecular matrices or guarantee contemporary raw-to-final execution across changed source repositories, historical environments, dependencies, or external licenses. Historical releases are not rewritten or retagged.
 
 ## 2.0.2
 

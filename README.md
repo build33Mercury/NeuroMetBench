@@ -2,13 +2,13 @@
 
 Version 2.0.3
 
-Article: *NeuroMetBench: Patient-aware claim-admissibility auditing of transcript-derived metabolic representations in glioma*
+Article: *NeuroMetBench: Patient-aware benchmarking reveals interpretation limits of transcript-derived metabolic representations in glioma*
 
 Author: Abdsalam Bitar, Independent Researcher, Amman, Jordan. ORCID: 0009-0009-9517-636X.
 
 ## Scope
 
-This archive accompanies a retrospective case study. It verifies supplied patient-level derived authorities, statistical summaries, multiplicity results, claim traceability, cohort accounting, figure generation, and named adverse findings. It also preserves byte-identified recovered historical stage packages and successful execution receipts covering method identity, comparator execution, public PDC/GDC acquisition, specificity, transport, missingness, multiplicity, simulation, ablation, numerical compatibility, CNS analysis, and the final scientific result lock.
+This archive accompanies a retrospective case study. It verifies supplied patient-level derived authorities, statistical summaries, multiplicity results, claim traceability, cohort accounting, figure generation, and named adverse findings. It also preserves a hash-locked historical computation record of 25 exact project artifacts: 12 source or runner packages, 12 corresponding result-authority packages recognized by the Phase-12 result lock, and the Phase-12 lock itself. Raw third-party molecular matrices are not redistributed; contemporary raw-to-final execution remains conditional on source availability, historical environments and dependencies, and applicable external licenses.
 
 The package preserves the frozen biological endpoints, cohorts, thresholds, canonical percentile intervals, statistical results, and adverse results inherited from v2.0.0. Version 2.0.3 adds:
 
@@ -18,8 +18,8 @@ The package preserves the frozen biological endpoints, cohorts, thresholds, cano
 - dependence-aware multiplicity reporting with the 34-row deduplicated family primary and the 39-row inherited family retained as a provenance sensitivity;
 - deterministic retrospective BCa interval sensitivity while leaving the canonical percentile intervals unchanged;
 - explicit prior-art, validation-scope, data-access, claim-ceiling, and non-admission boundaries;
-- deterministic verifiers for scientific results, exact resampling, registries, traceability, numerical sensitivity, scenario summaries, cohort reconstruction, internal identities, and figures.
-- the recovered historical computation record under `historical_pipeline/`, with 23 hash-locked packages or receipts and an independent integrity verifier.
+- deterministic verifiers for scientific results, exact resampling, registries, traceability, numerical sensitivity, scenario summaries, cohort reconstruction, internal identities, figures, and the recovered historical computation record;
+- a recovered 25-artifact historical project record with independent SHA-256, ZIP-integrity, Phase-12-authority, and adverse-status verification.
 
 The article and package are version 2.0.3. The reusable `neurometbench-ref` software component remains version 1.0.1. These identities are not interchangeable.
 
@@ -41,7 +41,7 @@ Follow `reproducibility/CLEAN_ROOM_INSTRUCTIONS.md` in a clean environment, then
 python reproducibility/verify_everything.py
 ```
 
-The command verifies the derived package and the recovered historical pipeline record. It does not download third-party raw matrices or reconstruct the historical platform-specific environments.
+The command verifies the derived package and the recovered historical project record. It does not redistribute third-party raw molecular matrices or guarantee contemporary raw-to-final execution across changed source repositories, environments, dependencies, or external licenses.
 
 ## Interpretation boundaries
 
@@ -49,9 +49,7 @@ Supported statements are limited to the named case-study associations, task-spec
 
 ## Data and rights
 
-Third-party raw molecular matrices are not redistributed. `scientific_authority/data_access_provenance_ledger.csv` records accessions, persistent routes, access class, identity strength, rights, redistribution status, and not-used boundaries. The repository license applies only to NeuroMetBench-authored code and documentation. It does not relicense source datasets or dependencies.
-
-The recovered stage chain includes public reacquisition runners, frozen designs, adapters, embedded authorities, and successful receipts. Contemporary raw-to-final execution remains conditional on source availability, reconstruction of the recorded environments, and third-party licenses. This limitation is distinct from absence of the historical source record, which is now included.
+Third-party raw molecular matrices are not redistributed. `scientific_authority/data_access_provenance_ledger.csv` records accessions, persistent routes, access class, identity strength, rights, redistribution status, and not-used boundaries. `LICENSE_SCOPE.txt` states the repository licensing boundary explicitly. The repository MIT license applies only to NeuroMetBench-authored code and documentation for which the author can grant that license; it does not relicense source datasets, dependencies, source-study materials, or differently governed content preserved inside historical provenance packages.
 
 ## Intended public identity
 
@@ -60,7 +58,6 @@ The recovered stage chain includes public reacquisition runners, frozen designs,
 - Release asset: `reproducibility_release.zip`
 - Archive size, release-asset SHA-256, publication state, and designated fields for exact version DOI and public URLs: `publication_receipt.txt`, distributed beside the archive
 
-The local candidate is not a public release until the detached receipt records
-successful publication and logged-out asset verification.
+The verified local candidate is not a public release until the detached receipt records successful publication and logged-out asset verification.
 
 The outer archive cannot contain its own final hash without changing the bytes being identified. Internal identities are recorded in `SHA256SUMS.txt`; cross-package identities are recorded in `cross_package_identity.csv`; the outer identity is detached.

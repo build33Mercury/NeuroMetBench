@@ -11,7 +11,7 @@ authors:
     orcid: "https://orcid.org/0009-0009-9517-636X"
 preferred-citation:
   type: article
-  title: "NeuroMetBench: Patient-aware claim-admissibility auditing of transcript-derived metabolic representations in glioma"
+  title: "NeuroMetBench: Patient-aware benchmarking reveals interpretation limits of transcript-derived metabolic representations in glioma"
   authors:
     - family-names: "Bitar"
       given-names: "Abdsalam"

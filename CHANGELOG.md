@@ -1,19 +1,22 @@
 # Changelog
 
-## 2.0.3 - 2026-08-22
+## 2.0.3 - 2026-08-23
 
-Derived-results verification, provenance, and submission-integrity repair. Canonical scientific results are unchanged.
+Derived-results verification, provenance, submission-integrity, and final clean-room repair. Canonical scientific results are unchanged.
 
 - Reframed the article as a retrospective case study and removed general framework-validation claims.
 - Corrected the ordered LSCC flow to 115 to 110 to 91 to 89 and recorded 108 of 110 as a parallel GDC branch.
 - Made the 34-row dependence-aware family primary and retained the inherited 39-row family as a provenance sensitivity.
 - Added a labeled deterministic BCa interval sensitivity without replacing the canonical percentile intervals.
 - Bound the exact submitted manuscript source, supplementary source, and Online Resource 2 archive.
-- Added explicit same-gene endpoint, current prior-art, independent-assessor, benchmark-comparison, and missing-upstream-pipeline limitations.
+- Added explicit same-gene endpoint, current prior-art, independent-assessor, benchmark-comparison, historical-pipeline, and raw-source/environment limitations.
 - Replaced the circular embedded-outer-hash design with an internal cross-package manifest and detached publication receipt.
-- Expanded the clean-room verifier to 19 checks and preserved every adverse result and frozen threshold.
+- Recovered a hash-locked 25-artifact historical project record tied to the Phase-12 result lock and added its independent integrity verifier.
+- Expanded the aggregate clean-room verifier to 20 checks and preserved every adverse result and frozen threshold.
+- Hardened the one-command verifier for headless/single-threaded execution and vectorized the frozen-seed bootstrap used during figure generation; exact CI values and all 21 PNG/SVG/EPS figure bytes remain unchanged.
+- Verified a completely fresh extraction under the documented reference stack with `20/20 PASS`, exit code 0, plus a separate independent reproduction of the primary statistics, multiplicity families, source identities, and figures.
 
-The package verifies supplied derived authorities and does not claim end-to-end regeneration from third-party raw data. The reusable `neurometbench-ref` software component remains version 1.0.1.
+The package verifies supplied derived authorities and preserves the recovered historical project record. It does not redistribute third-party raw molecular matrices or guarantee contemporary raw-to-final execution across changed source repositories, historical environments, dependencies, or external licenses. The reusable `neurometbench-ref` software component remains version 1.0.1.
 
 ## 2.0.2 - 2026-08-22
 
