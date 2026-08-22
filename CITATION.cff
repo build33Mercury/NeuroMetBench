@@ -1,14 +1,11 @@
 cff-version: 1.2.0
 message: "Please cite the NeuroMetBench article and this scientific reproducibility release."
-title: "NeuroMetBench"
-version: 2.0.1
-date-released: "2026-08-21"
-type: software
+title: "NeuroMetBench 2.0.2 scientific reproducibility release"
+version: 2.0.2
+date-released: "2026-08-22"
+type: dataset
+doi: 10.5281/zenodo.22058177
 repository-code: "https://github.com/build33Mercury/NeuroMetBench"
-identifiers:
-  - type: doi
-    value: "10.5281/zenodo.22036411"
-    description: "Zenodo DOI for version 2.0.1"
 authors:
   - family-names: "Bitar"
     given-names: "Abdsalam"

@@ -1,0 +1,100 @@
+name: Verify NeuroMetBench v2.0.2 publication
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-publication:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify public GitHub and Zenodo bytes
+        env:
+          EXPECTED_SHA256: a7f65a28d633441f0900f68957500022b0835aa2b38a8f558b1630b6ceade8b9
+          EXPECTED_FILENAME: reproducibility_release.zip
+          EXPECTED_TAG: v2.0.2
+          EXPECTED_VERSION: 2.0.2
+          EXPECTED_DOI: 10.5281/zenodo.22058177
+          EXPECTED_ZENODO_RECORD: '22058177'
+        run: |
+          python - <<'PY'
+          import hashlib
+          import io
+          import json
+          import os
+          import urllib.request
+          import zipfile
+
+          expected_sha = os.environ["EXPECTED_SHA256"]
+          expected_filename = os.environ["EXPECTED_FILENAME"]
+          expected_tag = os.environ["EXPECTED_TAG"]
+          expected_version = os.environ["EXPECTED_VERSION"]
+          expected_doi = os.environ["EXPECTED_DOI"]
+          record_id = os.environ["EXPECTED_ZENODO_RECORD"]
+          user_agent = "NeuroMetBench-Public-Verification/2.0.2"
+
+          def get_bytes(url):
+              request = urllib.request.Request(url, headers={"User-Agent": user_agent})
+              with urllib.request.urlopen(request, timeout=120) as response:
+                  return response.read(), response.geturl()
+
+          def get_json(url):
+              raw, final_url = get_bytes(url)
+              return json.loads(raw.decode("utf-8")), final_url
+
+          def verify_archive(raw, label):
+              observed = hashlib.sha256(raw).hexdigest()
+              if observed != expected_sha:
+                  raise SystemExit(f"{label}_SHA256_FAIL={observed}")
+              with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+                  if archive.testzip() is not None:
+                      raise SystemExit(f"{label}_ZIP_CRC_FAIL")
+                  names = archive.namelist()
+                  if len(names) != 193 or any(not name.startswith("reproducibility_release/") for name in names):
+                      raise SystemExit(f"{label}_ZIP_INVENTORY_FAIL={len(names)}")
+              print(f"{label}_SHA256={observed}")
+              print(f"{label}_ZIP_CRC_AND_INVENTORY=PASS")
+
+          release, _ = get_json(
+              f"https://api.github.com/repos/build33Mercury/NeuroMetBench/releases/tags/{expected_tag}"
+          )
+          if release.get("tag_name") != expected_tag:
+              raise SystemExit("GITHUB_TAG_FAIL")
+          assets = {asset.get("name"): asset for asset in release.get("assets", [])}
+          asset = assets.get(expected_filename)
+          if asset is None:
+              raise SystemExit("GITHUB_ASSET_MISSING")
+          github_bytes, github_url = get_bytes(asset["browser_download_url"])
+          verify_archive(github_bytes, "GITHUB")
+
+          record, _ = get_json(f"https://zenodo.org/api/records/{record_id}")
+          metadata = record.get("metadata", {})
+          observed_doi = record.get("doi") or ((record.get("pids") or {}).get("doi") or {}).get("identifier")
+          if observed_doi != expected_doi:
+              raise SystemExit(f"ZENODO_DOI_FAIL={observed_doi}")
+          if str(metadata.get("version")) != expected_version:
+              raise SystemExit(f"ZENODO_VERSION_FAIL={metadata.get('version')}")
+          if metadata.get("resource_type", {}).get("type") not in {"dataset", None} and metadata.get("upload_type") != "dataset":
+              raise SystemExit("ZENODO_RESOURCE_TYPE_FAIL")
+          files = record.get("files") or []
+          if isinstance(files, dict):
+              entries = files.get("entries") or {}
+              files = [dict(value, key=key) for key, value in entries.items()]
+          target = next((item for item in files if (item.get("key") or item.get("filename")) == expected_filename), None)
+          if target is None:
+              raise SystemExit("ZENODO_ASSET_MISSING")
+          links = target.get("links") or {}
+          zenodo_bytes, zenodo_url = get_bytes(links.get("content") or links.get("download") or links.get("self"))
+          verify_archive(zenodo_bytes, "ZENODO")
+
+          if github_bytes != zenodo_bytes:
+              raise SystemExit("CROSS_HOST_BYTE_IDENTITY_FAIL")
+          print(f"GITHUB_FINAL_URL={github_url}")
+          print(f"ZENODO_FINAL_URL={zenodo_url}")
+          print("CROSS_HOST_BYTE_IDENTITY=PASS")
+          print("NEUROMETBENCH_V2_0_2_PUBLICATION_VERIFICATION_PASS")
+          PY

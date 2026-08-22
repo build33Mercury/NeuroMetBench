@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.0.2 - 2026-08-22
+
+Scientific reproducibility, provenance, traceability, and figure-semantics repair. Scientific results are unchanged from v2.0.0.
+
+- Replaced stale active evidence paths with exact current manuscript, authority, selector, and method-result-claim mappings.
+- Reconstructed LSCC and CNS/HGG cohort flows from archived metadata and selection locks, including reason-level and identifier-level exclusions.
+- Exposed all 432 simulation scenarios and the concentrated supported-domain and broad-domain failures.
+- Disclosed the Pearson/t/Fisher-z simulation proxy versus the empirical Spearman/permutation/bootstrap engine.
+- Specified the exact external BSL01 construction and MetroSCREEN v0.91 released implementation identity.
+- Preserved the complete 39-cell external family and 34-cell dependence sensitivity.
+- Corrected Figure 2 and Figure 5 missing-value semantics without changing unaffected Figures 3, 4, 6, or 7.
+- Added figure alternative-description fields, complete inventories, exact cohort reconstruction, and a 16-check clean-room verifier.
+- Preserved every frozen result, adverse finding, non-admission, technical failure, version boundary, and source-rights limitation.
+
+The reusable `neurometbench-ref` software component remains version 1.0.1.
+
 ## 2.0.1 - 2026-08-21
 
 Documentation and reproducibility correction. Scientific results are unchanged from v2.0.0.
@@ -9,7 +25,7 @@ Documentation and reproducibility correction. Scientific results are unchanged f
 - Added exact bit-identity and statistics verification.
 - Changed final figure generation so primary headline statistics are computed from verified authorities rather than supplied as literal annotations.
 - Recorded the exact historical scCellFie 0.6.2 source commit `bad8ea9afcd898c8633dac7d3ab1f83dc086b9b1`.
-- Preserved all v2.0.0 biological endpoints, cohorts, thresholds, results, adverse findings, and claim ceilings unchanged.
+- Preserved all v2.0.0 biological endpoints, cohorts, thresholds, results, adverse findings, and interpretation boundaries unchanged.
 
 ## 2.0.0 - 2026-08-20
 
