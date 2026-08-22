@@ -1,58 +1,66 @@
-# NeuroMetBench
+# NeuroMetBench derived-results verification and provenance package
 
-NeuroMetBench is a patient-aware neuroinformatics framework for evaluating transcript-derived metabolic inference. It separates biological sampling-unit validity, cross-modal concordance, development-to-external transport, comparator compatibility, missingness, multiplicity, and numerical admissibility rather than collapsing heterogeneous tasks into a single leaderboard.
+Version 2.0.3
 
-## Current scientific reproducibility release
+Article: *NeuroMetBench: Patient-aware claim-admissibility auditing of transcript-derived metabolic representations in glioma*
 
-Version 2.0.2 is a scientific reproducibility and traceability repair to v2.0.1. It does not change any frozen biological endpoint, cohort, threshold, statistical result, adverse result, or interpretation boundary from v2.0.0.
+Author: Abdsalam Bitar, Independent Researcher, Amman, Jordan. ORCID: 0009-0009-9517-636X.
 
-Article identity:
+## Scope
 
-**NeuroMetBench: A patient-aware neuroinformatics framework for multi-axis evaluation of transcript-derived metabolic inference in glioma**
+This archive accompanies a retrospective case study. It verifies supplied patient-level derived authorities, statistical summaries, multiplicity results, claim traceability, cohort accounting, figure generation, and named adverse findings. It also preserves byte-identified recovered historical stage packages and successful execution receipts covering method identity, comparator execution, public PDC/GDC acquisition, specificity, transport, missingness, multiplicity, simulation, ablation, numerical compatibility, CNS analysis, and the final scientific result lock.
 
-Zenodo version DOI: https://doi.org/10.5281/zenodo.22058177
+The package preserves the frozen biological endpoints, cohorts, thresholds, canonical percentile intervals, statistical results, and adverse results inherited from v2.0.0. Version 2.0.3 adds:
 
-Zenodo concept DOI: https://doi.org/10.5281/zenodo.21830887
+- the exact submitted manuscript and supplementary LaTeX sources under `article/`;
+- an exact copy of Online Resource 2 as `online_resource_2.zip`, bound by `cross_package_identity.csv`;
+- corrected LSCC flow semantics: the ordered proteomic path is 115 to 110 to 91 to 89, while 108 of 110 is a parallel GDC-eligibility branch;
+- dependence-aware multiplicity reporting with the 34-row deduplicated family primary and the 39-row inherited family retained as a provenance sensitivity;
+- deterministic retrospective BCa interval sensitivity while leaving the canonical percentile intervals unchanged;
+- explicit prior-art, validation-scope, data-access, claim-ceiling, and non-admission boundaries;
+- deterministic verifiers for scientific results, exact resampling, registries, traceability, numerical sensitivity, scenario summaries, cohort reconstruction, internal identities, and figures.
+- the recovered historical computation record under `historical_pipeline/`, with 23 hash-locked packages or receipts and an independent integrity verifier.
 
-Release asset: `reproducibility_release.zip`
+The article and package are version 2.0.3. The reusable `neurometbench-ref` software component remains version 1.0.1. These identities are not interchangeable.
 
-SHA-256:
+## Frozen results and adverse findings
 
-`a7f65a28d633441f0900f68957500022b0835aa2b38a8f558b1630b6ceade8b9`
+- LSCC development-unused internal stress test: n=89, serine-de-novo Spearman rho=0.9070558388598963, zero exceedances in 100,000 permutations, reported Monte Carlo floor p=1/100001, canonical patient-bootstrap percentile 95% CI [0.8496172720469373, 0.9387662754309077], and retrospective BCa sensitivity [0.8549569717100521, 0.9419991215859146].
+- CNS/high-grade-glioma external case study: n=90, rho=0.6266145829894963, zero exceedances in 100,000 permutations, reported Monte Carlo floor p=1/100001, canonical percentile 95% CI [0.4696652580556697, 0.7506606861648679], and retrospective BCa sensitivity [0.4593163084727422, 0.7440560575519283].
+- Dependence-aware external family: 32/34 BH-supported and 26/34 BY-supported. The inherited 39-row family gives 37/39 BH-supported and 30/39 BY-supported and is retained as a provenance sensitivity.
+- Development-to-LSCC transport: 33 matched cells, 30 sign-retained, three reversed, and effect-rank stability rho=0.6424749163879598.
+- Broad calibration was not earned. Supported-scenario power was 0.4870604453870623. The stylized simulation used a Pearson/t/Fisher-z proxy rather than the empirical Spearman/permutation/bootstrap engine.
+- METAFlux numerical sensitivity: 113/113 archived vectors pass the project-defined 1e-3 compatibility threshold, 112/113 at 1e-4, and 0/113 at 1e-5 or tighter tested tolerances. Reaction-order swaps remain undetected in 0/113 units.
+- The spatial module is structurally non-admitted under the frozen coverage rule. Three-gene serine aggregation did not outperform PSAT1.
 
-Version 2.0.2 repairs current method-result-claim traceability, reconstructs exact LSCC and CNS/HGG cohort flow from archived metadata and selection locks, exposes all scenario-level simulation failures, expands comparator execution and licensing provenance, corrects figure missing-value semantics, supplies portal-ready figure descriptions, and adds complete-inventory clean-room verification.
+## Verification
 
-## Frozen headline results
+Follow `reproducibility/CLEAN_ROOM_INSTRUCTIONS.md` in a clean environment, then run:
 
-- LSCC cross-cancer stress test: n=89, serine de novo Spearman rho=0.9070558388598963, 100,000-permutation p=9.99990000099999e-06, bootstrap 95% CI [0.8496172720469373, 0.9387662754309077].
-- CNS/high-grade-glioma generalization: n=90, serine de novo Spearman rho=0.6266145829894963, 100,000-permutation p=9.99990000099999e-06, bootstrap 95% CI [0.4696652580556697, 0.7506606861648679].
-- Development-to-external transport: 33 matched method-endpoint cells, 30/33 sign retention, three reversals, effect-rank Spearman rho=0.6424749163879598.
-- Numerical axis: 113/113 archived METAFlux vectors pass the frozen 1e-3 primal-feasibility compatibility threshold; the reaction-order-swap stress test remains undetected, so solver optimality or comprehensive numerical validity is not claimed.
-
-## Reproduction
-
-Extract `reproducibility_release.zip`, install the pinned dependencies, and run:
-
-```text
+```bash
 python reproducibility/verify_everything.py
 ```
 
-A passing run ends with `NEUROMETBENCH_V2_0_2_EVERYTHING_PASS` after 16 independent and cross-linked checks, including two consecutive byte-identical figure reconstructions.
+The command verifies the derived package and the recovered historical pipeline record. It does not download third-party raw matrices or reconstruct the historical platform-specific environments.
 
-The root `SHA256SUMS.txt` covers the current reusable software and current v2.0.2 metadata. Immutable historical-release directories remain outside that current-state manifest.
+## Interpretation boundaries
 
-## Software component
+Supported statements are limited to the named case-study associations, task-specific transport observations, explicit non-admission states, the stylized simulation summary, and the named numerical compatibility test. The evidence does not establish measured metabolic flux, universal method superiority, public preregistration, a prospective external holdout, independent biochemical validation, full calibration, GBM-only replication, solver optimality, comprehensive numerical validation, or a generally validated benchmarking framework. The same-gene RNA-protein comparison is cross-modal but not an orthogonal biochemical endpoint.
 
-The reusable `neurometbench-ref` software component remains version 1.0.1. Version 2.0.2 refers to the scientific repository and reproducibility release, not a change to that software package API.
+## Data and rights
 
-## Scientific boundaries
+Third-party raw molecular matrices are not redistributed. `scientific_authority/data_access_provenance_ledger.csv` records accessions, persistent routes, access class, identity strength, rights, redistribution status, and not-used boundaries. The repository license applies only to NeuroMetBench-authored code and documentation. It does not relicense source datasets or dependencies.
 
-NeuroMetBench is not a flux predictor and does not claim measured or absolute flux, universal method superiority, an untouched holdout, public preregistration, full empirical calibration, or GBM-only generalization for the CNS cohort. The broad simulation used a Pearson/t/Fisher-z proxy rather than the empirical Spearman/permutation/bootstrap engine. Technical non-execution remains separate from biological discordance.
+The recovered stage chain includes public reacquisition runners, frozen designs, adapters, embedded authorities, and successful receipts. Contemporary raw-to-final execution remains conditional on source availability, reconstruction of the recorded environments, and third-party licenses. This limitation is distinct from absence of the historical source record, which is now included.
 
-## Historical releases
+## Intended public identity
 
-Historical v1.0.0, v1.0.1, v1.1.0, v2.0.0, and v2.0.1 artifacts remain immutable. Version 2.0.2 does not overwrite or retag them.
+- Intended GitHub release tag: `v2.0.3`
+- Stable Zenodo concept DOI: `10.5281/zenodo.21830887`
+- Release asset: `reproducibility_release.zip`
+- Archive size, release-asset SHA-256, publication state, and designated fields for exact version DOI and public URLs: `publication_receipt.txt`, distributed beside the archive
 
-## License and data rights
+The local candidate is not a public release until the detached receipt records
+successful publication and logged-out asset verification.
 
-Repository-authored software materials are distributed under the MIT License. The license does not relicense third-party datasets, dependencies, or source-study materials. Raw third-party molecular matrices are not redistributed where source terms or repository policy govern access.
+The outer archive cannot contain its own final hash without changing the bytes being identified. Internal identities are recorded in `SHA256SUMS.txt`; cross-package identities are recorded in `cross_package_identity.csv`; the outer identity is detached.

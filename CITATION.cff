@@ -1,10 +1,9 @@
 cff-version: 1.2.0
-message: "Please cite the NeuroMetBench article and this scientific reproducibility release."
-title: "NeuroMetBench 2.0.2 scientific reproducibility release"
-version: 2.0.2
-date-released: "2026-08-22"
+message: "Please cite the NeuroMetBench article and this derived-results verification and provenance package."
+title: "NeuroMetBench derived-results verification and provenance package"
+version: 2.0.3
 type: dataset
-doi: 10.5281/zenodo.22058177
+doi: 10.5281/zenodo.21830887
 repository-code: "https://github.com/build33Mercury/NeuroMetBench"
 authors:
   - family-names: "Bitar"
@@ -12,7 +11,7 @@ authors:
     orcid: "https://orcid.org/0009-0009-9517-636X"
 preferred-citation:
   type: article
-  title: "NeuroMetBench: A patient-aware neuroinformatics framework for multi-axis evaluation of transcript-derived metabolic inference in glioma"
+  title: "NeuroMetBench: Patient-aware claim-admissibility auditing of transcript-derived metabolic representations in glioma"
   authors:
     - family-names: "Bitar"
       given-names: "Abdsalam"

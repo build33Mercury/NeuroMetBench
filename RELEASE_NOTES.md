@@ -1,24 +1,26 @@
 # Release notes
 
-## 2.0.2, 22 August 2026
+## 2.0.3
 
-Scientific reproducibility, provenance, traceability, and figure-semantics repair. Frozen scientific results are unchanged from v2.0.0.
+Derived-results verification, provenance, and submission-integrity repair. Frozen canonical scientific results are unchanged.
 
-Changes:
+- reframed the work as a retrospective case study and removed claims of general framework validation;
+- synchronized the exact submitted manuscript, supplementary source, and Online Resource 2 identities;
+- corrected LSCC accounting so 115 to 110 to 91 to 89 is the ordered proteomic path and 108 of 110 is a parallel GDC branch;
+- made the 34-row dependence-aware family primary and retained the inherited 39-row family as a provenance sensitivity;
+- added deterministic retrospective BCa interval sensitivity without changing the canonical percentile intervals;
+- expanded current prior-art, validation-scope, evidence-ceiling, same-gene endpoint, and missing-upstream-pipeline disclosures;
+- replaced the impossible embedded outer-archive hash design with an internal cross-package manifest and detached publication receipt;
+- retained every adverse result and frozen threshold.
+- recovered and hash-locked the historical upstream stage and receipt chain, including public acquisition, comparator, simulation, ablation, numerical, and external-analysis packages;
+- added an independent verifier for all 23 recovered pipeline artifacts while preserving raw-data, platform, and license boundaries.
 
-- replaced stale active evidence paths with exact current manuscript, authority, selector, and method-result-claim mappings;
-- reconstructed LSCC and CNS/HGG cohort flows from archived metadata and selection locks, including reason-level and identifier-level exclusions;
-- exposed all 432 simulation scenarios and the concentrated supported-domain and broad-domain failures;
-- disclosed that the broad simulation used a Pearson/t/Fisher-z proxy rather than the empirical Spearman/permutation/bootstrap engine;
-- specified the exact external BSL01 construction and the MetroSCREEN v0.91 released `cal_MetaModule` implementation, including its GSVA dependence;
-- retained and reverified the full 39-cell external family and the 34-cell ACT05-excluded dependence sensitivity;
-- corrected Figure 2 and Figure 5 missing-value semantics so not-evaluated quantities are not plotted as zero;
-- supplied portal-ready alternative descriptions for Figures 1-7 without claiming tagged-PDF accessibility;
-- added complete checksum inventories, registry verification, exact cohort reconstruction, and a 16-check `verify_everything.py` clean-room entry point;
-- preserved all adverse findings, non-admissions, technical failures, version boundaries, and source-rights limitations.
+This package verifies supplied derived authorities and preserves the recovered historical computation record. It does not redistribute third-party raw matrices or claim that the historical platform-specific environments and external licenses can be recreated without additional work. Historical releases are not rewritten or retagged.
 
-The reusable `neurometbench-ref` software component remains version 1.0.1. Historical releases are not rewritten or retagged.
+## 2.0.2
 
-## 2.0.1, 21 August 2026
+Claim-traceability, cohort-accounting, comparator-provenance, accessibility, and release-metadata repair. Superseded by 2.0.3 for the current article.
 
-Documentation and reproducibility correction. Scientific results remained unchanged from v2.0.0.
+## 2.0.1
+
+Primary-statistics parser correction and exact software provenance. Superseded by 2.0.3 for the current article.

@@ -1,7 +1,7 @@
 {
-  "title": "NeuroMetBench 2.0.2 scientific reproducibility release",
+  "title": "NeuroMetBench derived-results verification and provenance package",
   "upload_type": "dataset",
-  "description": "Scientific reproducibility release for the NeuroMetBench Original Article. Frozen biological endpoints, cohorts, thresholds, statistical results, and adverse results are unchanged from v2.0.0. Version 2.0.2 repairs current method-result-claim traceability, cohort accounting, scenario-level simulation exposure, comparator execution provenance, data-access boundaries, figure semantics, accessibility-field text, and release metadata. The reusable neurometbench-ref software component remains version 1.0.1.",
+  "description": "Derived-results verification and provenance package for the NeuroMetBench retrospective case study. Frozen biological endpoints, cohorts, thresholds, statistical results, and adverse results are unchanged from v2.0.0. Version 2.0.3 binds the exact article source and Online Resource 2, corrects LSCC cohort-flow semantics, adds a prespecified-vs-retrospective analysis boundary, exposes current prior-art boundaries, adds deterministic BCa sensitivity verification, and preserves 23 byte-identified recovered historical stage packages or successful execution receipts. The chain covers method identity, comparator execution, public PDC/GDC acquisition, specificity, transport, missingness, multiplicity, simulation, ablation, numerical compatibility, CNS analysis, and the final scientific result lock. Raw third-party matrices are not redistributed. Contemporary raw-to-final execution requires source reacquisition, reconstruction of recorded platform-specific environments, and applicable external licenses. The reusable neurometbench-ref software component remains version 1.0.1.",
   "creators": [
     {
       "name": "Bitar, Abdsalam",
@@ -9,7 +9,7 @@
       "orcid": "0009-0009-9517-636X"
     }
   ],
-  "version": "2.0.2",
+  "version": "2.0.3",
   "license": "mit",
   "keywords": [
     "Neuroinformatics",
@@ -24,6 +24,7 @@
     {
       "identifier": "https://github.com/build33Mercury/NeuroMetBench",
       "relation": "isSupplementTo",
+      "resource_type": "software",
       "scheme": "url"
     }
   ]

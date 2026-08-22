@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.0.3 - 2026-08-22
+
+Derived-results verification, provenance, and submission-integrity repair. Canonical scientific results are unchanged.
+
+- Reframed the article as a retrospective case study and removed general framework-validation claims.
+- Corrected the ordered LSCC flow to 115 to 110 to 91 to 89 and recorded 108 of 110 as a parallel GDC branch.
+- Made the 34-row dependence-aware family primary and retained the inherited 39-row family as a provenance sensitivity.
+- Added a labeled deterministic BCa interval sensitivity without replacing the canonical percentile intervals.
+- Bound the exact submitted manuscript source, supplementary source, and Online Resource 2 archive.
+- Added explicit same-gene endpoint, current prior-art, independent-assessor, benchmark-comparison, and missing-upstream-pipeline limitations.
+- Replaced the circular embedded-outer-hash design with an internal cross-package manifest and detached publication receipt.
+- Expanded the clean-room verifier to 19 checks and preserved every adverse result and frozen threshold.
+
+The package verifies supplied derived authorities and does not claim end-to-end regeneration from third-party raw data. The reusable `neurometbench-ref` software component remains version 1.0.1.
+
 ## 2.0.2 - 2026-08-22
 
 Scientific reproducibility, provenance, traceability, and figure-semantics repair. Scientific results are unchanged from v2.0.0.
