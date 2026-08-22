@@ -1,7 +1,7 @@
 {
   "title": "NeuroMetBench derived-results verification and provenance package",
   "upload_type": "dataset",
-  "description": "Derived-results verification and provenance package for the NeuroMetBench retrospective case study. Frozen biological endpoints, cohorts, thresholds, statistical results, and adverse results are unchanged from v2.0.0. Version 2.0.3 binds the exact article source and Online Resource 2, corrects LSCC cohort-flow semantics, adds a prespecified-versus-retrospective analysis boundary, exposes current prior-art boundaries, adds deterministic BCa sensitivity verification, and preserves a hash-locked 25-artifact historical project record tied to the Phase-12 result lock. Raw third-party molecular matrices are not redistributed; contemporary raw-to-final execution remains conditional on source availability, historical environments and dependencies, and applicable external licenses. The reusable neurometbench-ref software component remains version 1.0.1.",
+  "description": "Derived-results verification and provenance package for the NeuroMetBench retrospective case study. Frozen biological endpoints, cohorts, thresholds, statistical results, and adverse results are unchanged from v2.0.0. Version 2.0.4 is the synchronized post-audit publication candidate. It binds the exact article source and Online Resource 2, corrects LSCC cohort-flow semantics, adds a prespecified-versus-retrospective analysis boundary, exposes current prior-art boundaries, adds deterministic BCa sensitivity verification, and preserves a hash-locked 25-artifact historical project record tied to the Phase-12 result lock. Raw third-party molecular matrices are not redistributed; contemporary raw-to-final execution remains conditional on source availability, historical environments and dependencies, and applicable external licenses. The reusable neurometbench-ref software component remains version 1.0.1. The already-published v2.0.3 release is retained immutable and is superseded for the current article by v2.0.4.",
   "creators": [
     {
       "name": "Bitar, Abdsalam",
@@ -9,7 +9,7 @@
       "orcid": "0009-0009-9517-636X"
     }
   ],
-  "version": "2.0.3",
+  "version": "2.0.4",
   "license": "mit",
   "keywords": [
     "Neuroinformatics",
@@ -24,8 +24,7 @@
     {
       "identifier": "https://github.com/build33Mercury/NeuroMetBench",
       "relation": "isSupplementTo",
-      "resource_type": "software",
-      "scheme": "url"
+      "resource_type": "software"
     }
   ]
 }
