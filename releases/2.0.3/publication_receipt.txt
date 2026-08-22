@@ -1,0 +1,27 @@
+PUBLICATION RECEIPT
+
+package_version=2.0.3
+release_asset_name=reproducibility_release.zip
+release_asset_bytes=144537505
+release_asset_sha256=a7be5501dde784174435f8edc5d52bc71f98d1031a5dfd4d5813c533dedaa830
+submission_archive_name=submission_files.zip
+submission_archive_bytes=13711437
+submission_archive_sha256=696d176cbc34599690dc13fa09adaa8f541ba55a564db4ae48e7e7212fa98ed9
+online_resource_2_name=ESM_2.zip
+online_resource_2_bytes=8200482
+online_resource_2_sha256=513f17b262a631caee5c39dba7a828b24ef8c4731b37687a8918aa6e6e9d364e
+intended_github_tag=v2.0.3
+intended_github_release_url=https://github.com/build33Mercury/NeuroMetBench/releases/tag/v2.0.3
+zenodo_concept_doi=10.5281/zenodo.21830887
+zenodo_exact_version_doi=UNASSIGNED
+zenodo_exact_version_url=UNASSIGNED
+publication_state=LOCAL_CANDIDATE_NOT_PUBLICLY_VERIFIED
+github_tag_check=ABSENT
+github_release_api_check=HTTP_404
+zenodo_concept_check=CURRENTLY_RESOLVES_TO_PRIOR_VERSION_2.0.2_DOI_10.5281/zenodo.22058177
+logged_out_asset_download_check=NOT_AVAILABLE
+historical_pipeline_integrity_check=PASS_23_OF_23
+clean_room_verifier_check=PASS_20_OF_20
+publication_required_before_submission=yes
+
+The release asset cannot contain its own final SHA-256 without changing the bytes being identified. This detached receipt records the local candidate identity. After immutable publication, update the unassigned exact-version DOI and URL plus the publication-state and verification fields, then rerun logged-out download verification. Do not alter the archive identity fields. Do not submit while publication_state remains LOCAL_CANDIDATE_NOT_PUBLICLY_VERIFIED.
