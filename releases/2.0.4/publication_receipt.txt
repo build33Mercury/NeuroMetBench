@@ -2,7 +2,7 @@ PUBLICATION RECEIPT
 
 package_version=2.0.4
 article_title=NeuroMetBench: Patient-aware benchmarking reveals interpretation limits of transcript-derived metabolic representations in glioma
-release_asset_name=reproducibility_release.zip
+release_asset_name=NeuroMetBench_v2.0.4_reproducibility_release.zip
 release_asset_bytes=134068904
 release_asset_sha256=67bcfd6713b40cd04e7474382a75d77c0cfb836c5344d1c98b8fe6c5e5e2c5e5
 release_archive_crc=PASS
@@ -29,15 +29,28 @@ stranger_independent_reproduction=PASS
 historical_pipeline_integrity_check=PASS_25_OF_25
 phase12_result_authorities=PASS_12_OF_12
 prior_public_release=v2.0.3_PRESENT_AND_RETAINED_IMMUTABLE
-current_intended_github_tag=v2.0.4
-current_intended_github_release_url=https://github.com/build33Mercury/NeuroMetBench/releases/tag/v2.0.4
+current_github_tag=v2.0.4
+github_release_state=PUBLISHED_NON_DRAFT_NON_PRERELEASE
+github_public_asset_sha256=67bcfd6713b40cd04e7474382a75d77c0cfb836c5344d1c98b8fe6c5e5e2c5e5
+github_public_asset_bytes=134068904
 zenodo_concept_doi=10.5281/zenodo.21830887
-zenodo_exact_version_doi=UNASSIGNED
-zenodo_exact_version_url=UNASSIGNED
-publication_state=LOCAL_V2_0_4_CANDIDATE_NOT_PUBLICLY_VERIFIED
-logged_out_v2_0_4_asset_download_check=NOT_AVAILABLE_UNTIL_PUBLICATION
-publication_required_before_journal_submission=yes
+zenodo_exact_version_doi=10.5281/zenodo.22063156
+zenodo_exact_version_url=https://zenodo.org/records/22063156
+zenodo_public_asset_sha256=67bcfd6713b40cd04e7474382a75d77c0cfb836c5344d1c98b8fe6c5e5e2c5e5
+zenodo_public_asset_bytes=134068904
+zenodo_access_right=open
+public_asset_byte_identity=PASS
+public_asset_zip_integrity=PASS
+public_metadata_verification=PASS
+public_cloud_verification_run_id=32608603930
+public_cloud_verification_job_id=97117713437
+public_verification_date=2026-08-23
+publication_state=PUBLIC_V2_0_4_VERIFIED
+logged_out_v2_0_4_asset_download_check=PASS_GITHUB_AND_ZENODO_SHA256_AND_BYTE_IDENTITY
+publication_required_before_journal_submission=no
 
-Versioning note: a public v2.0.3 release already existed before the final audit completed. It must remain historical and immutable. The final repaired article package was therefore advanced to v2.0.4 rather than overwriting or retagging v2.0.3.
+Versioning note: public v2.0.3 remains an immutable historical predecessor. The final repaired article package was advanced to v2.0.4 rather than overwriting or retagging v2.0.3.
 
-Do not submit while publication_state remains LOCAL_V2_0_4_CANDIDATE_NOT_PUBLICLY_VERIFIED. After immutable v2.0.4 publication on GitHub and Zenodo, retrieve the public assets independently, require SHA-256 67bcfd6713b40cd04e7474382a75d77c0cfb836c5344d1c98b8fe6c5e5e2c5e5, record the exact Zenodo version DOI, and update only this detached receipt/publication record. Do not modify the frozen archive bytes.
+Public verification was executed on a GitHub-hosted Ubuntu runner. The runner independently downloaded the GitHub v2.0.4 release asset and Zenodo record 22063156, required SHA-256 67bcfd6713b40cd04e7474382a75d77c0cfb836c5344d1c98b8fe6c5e5e2c5e5 for both, required byte-for-byte identity between the two downloads, tested both ZIP archives, and verified Zenodo DOI/title/version/creator/open-access metadata plus GitHub release/tag/asset metadata. All checks passed.
+
+PUBLICATION_GATE=PASS
