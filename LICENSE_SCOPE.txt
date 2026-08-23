@@ -4,6 +4,6 @@ The MIT LICENSE in this repository applies only to NeuroMetBench-authored softwa
 
 It does not relicense third-party datasets, source-study material, external software dependencies, repository-hosted molecular matrices, or other third-party content. Those materials remain governed by their original licenses, repository terms, data-use conditions, or access controls.
 
-Recovered files preserved as historical provenance records do not acquire broader rights by inclusion. Raw third-party molecular matrices are not redistributed. Source-specific access, rights, identity strength, and redistribution boundaries are recorded in the released scientific_authority/data_access_provenance_ledger.csv.
+Historical provenance identities do not acquire broader rights by inclusion. Raw third-party molecular matrices are not redistributed. Source-specific access, rights, identity strength, and redistribution boundaries are recorded in the released scientific_authority/data_access_provenance_ledger.csv.
 
 When a file contains only NeuroMetBench-authored code or documentation, the repository MIT license applies. When rights are mixed or source-governed, the narrower original terms control for the affected material.
