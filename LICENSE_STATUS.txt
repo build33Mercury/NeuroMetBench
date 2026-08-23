@@ -1,1 +1,1 @@
-NeuroMetBench-authored software and documentation in this release are distributed under the MIT License. See LICENSE and LICENSE_SCOPE.txt.
+NeuroMetBench-authored software and documentation in this release are distributed under the MIT License. See LICENSE, LICENSE_SCOPE.md, and LICENSE_SCOPE.txt.
