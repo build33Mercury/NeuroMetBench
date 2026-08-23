@@ -1,0 +1,7 @@
+NeuroMetBench v2.0.7 reproducibility release
+Filename: NeuroMetBench_v2.0.7_reproducibility_release.zip
+SHA-256: 955bfafae9bf2a3b85f06a0485f27760e23ab72c669ffedf061b736c90670bba
+Size: 21785165 bytes
+Files in archive: 257
+
+This file records the immutable identity expected for the public v2.0.7 release asset.
