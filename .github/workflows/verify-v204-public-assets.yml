@@ -1,0 +1,95 @@
+name: Verify v2.0.4 public assets
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download and verify public assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXPECTED="67bcfd6713b40cd04e7474382a75d77c0cfb836c5344d1c98b8fe6c5e5e2c5e5"
+          GH_URL="https://github.com/build33Mercury/NeuroMetBench/releases/download/v2.0.4/NeuroMetBench_v2.0.4_reproducibility_release.zip"
+          ZEN_URL="https://zenodo.org/records/22063156/files/NeuroMetBench_v2.0.4_reproducibility_release.zip?download=1"
+
+          curl -fL --retry 5 --retry-all-errors "$GH_URL" -o github.zip
+          curl -fL --retry 5 --retry-all-errors "$ZEN_URL" -o zenodo.zip
+
+          GH_SHA="$(sha256sum github.zip | awk '{print $1}')"
+          ZEN_SHA="$(sha256sum zenodo.zip | awk '{print $1}')"
+          GH_SIZE="$(stat -c%s github.zip)"
+          ZEN_SIZE="$(stat -c%s zenodo.zip)"
+
+          echo "EXPECTED_SHA256=$EXPECTED"
+          echo "GITHUB_SHA256=$GH_SHA"
+          echo "ZENODO_SHA256=$ZEN_SHA"
+          echo "GITHUB_BYTES=$GH_SIZE"
+          echo "ZENODO_BYTES=$ZEN_SIZE"
+
+          test "$GH_SHA" = "$EXPECTED"
+          test "$ZEN_SHA" = "$EXPECTED"
+          cmp -s github.zip zenodo.zip
+          unzip -t github.zip >/dev/null
+          unzip -t zenodo.zip >/dev/null
+          echo "PUBLIC_ASSET_BYTE_IDENTITY=PASS"
+
+      - name: Verify Zenodo metadata and GitHub release metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 5 --retry-all-errors "https://zenodo.org/api/records/22063156" -o zenodo.json
+          curl -fsSL --retry 5 --retry-all-errors "https://api.github.com/repos/build33Mercury/NeuroMetBench/releases/tags/v2.0.4" -o github_release.json
+
+          python - <<'PY'
+          import json
+
+          expected_title = "NeuroMetBench: Patient-aware benchmarking reveals interpretation limits of transcript-derived metabolic representations in glioma"
+          expected_file = "NeuroMetBench_v2.0.4_reproducibility_release.zip"
+
+          z = json.load(open("zenodo.json", encoding="utf-8"))
+          md = z.get("metadata", {})
+          files = z.get("files", [])
+          creators = md.get("creators", [])
+          z_names = [f.get("key") for f in files]
+
+          print("ZENODO_ID=", z.get("id"), sep="")
+          print("ZENODO_DOI=", z.get("doi") or md.get("doi"), sep="")
+          print("ZENODO_TITLE=", md.get("title"), sep="")
+          print("ZENODO_VERSION=", md.get("version"), sep="")
+          print("ZENODO_PUBLICATION_DATE=", md.get("publication_date"), sep="")
+          print("ZENODO_ACCESS_RIGHT=", md.get("access_right"), sep="")
+          print("ZENODO_CREATORS=", creators, sep="")
+          print("ZENODO_FILES=", z_names, sep="")
+
+          assert str(z.get("id")) == "22063156"
+          assert (z.get("doi") or md.get("doi")) == "10.5281/zenodo.22063156"
+          assert md.get("title") == expected_title
+          assert md.get("version") == "2.0.4"
+          assert expected_file in z_names
+          assert any(c.get("name") == "Bitar, Abdsalam" for c in creators)
+          print("ZENODO_METADATA=PASS")
+
+          g = json.load(open("github_release.json", encoding="utf-8"))
+          assets = g.get("assets", [])
+          asset_names = [a.get("name") for a in assets]
+          print("GITHUB_TAG=", g.get("tag_name"), sep="")
+          print("GITHUB_RELEASE_NAME=", g.get("name"), sep="")
+          print("GITHUB_DRAFT=", g.get("draft"), sep="")
+          print("GITHUB_PRERELEASE=", g.get("prerelease"), sep="")
+          print("GITHUB_PUBLISHED_AT=", g.get("published_at"), sep="")
+          print("GITHUB_ASSETS=", asset_names, sep="")
+
+          assert g.get("tag_name") == "v2.0.4"
+          assert g.get("draft") is False
+          assert expected_file in asset_names
+          print("GITHUB_RELEASE_METADATA=PASS")
+          print("PUBLIC_V2_0_4_VERIFICATION=PASS")
+          PY
