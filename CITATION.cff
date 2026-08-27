@@ -1,12 +1,12 @@
 cff-version: 1.2.0
-message: "Please cite the NeuroMetBench article and this derived-results verification and provenance package."
-title: "NeuroMetBench derived-results verification and provenance package"
-version: 2.0.7
+message: "Please cite the NeuroMetBench article and this reproducibility package."
+title: "NeuroMetBench reproducibility package"
+version: 2.1.0
 type: dataset
 identifiers:
   - type: doi
     value: 10.5281/zenodo.21830887
-    description: "Zenodo concept DOI for the NeuroMetBench release lineage; use the detached publication receipt for the version-specific DOI."
+    description: "Zenodo concept DOI for the NeuroMetBench release lineage; use the version-specific DOI after publication."
 repository-code: "https://github.com/build33Mercury/NeuroMetBench"
 authors:
   - family-names: "Bitar"
@@ -14,7 +14,7 @@ authors:
     orcid: "https://orcid.org/0009-0009-9517-636X"
 preferred-citation:
   type: article
-  title: "NeuroMetBench: Patient-aware benchmarking reveals interpretation limits of transcript-derived metabolic representations in glioma"
+  title: "NeuroMetBench: Patient-aware evidence bounds for transcript-derived metabolic representations across cancer proteogenomic contexts"
   authors:
     - family-names: "Bitar"
       given-names: "Abdsalam"
