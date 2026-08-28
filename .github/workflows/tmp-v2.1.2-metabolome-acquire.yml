@@ -1,4 +1,4 @@
-name: Temporary v2.1.2 RNA protein acquisition
+name: Temporary v2.1.2 protein identifier diagnostics
 
 on:
   push:
@@ -9,26 +9,21 @@ permissions:
   contents: read
 
 jobs:
-  acquire:
+  inspect:
     runs-on: ubuntu-latest
     steps:
-      - name: Acquire target RNA and protein rows from Wang Table S2-derived public matrices
+      - name: Inspect frozen serine-core identifiers in Wang protein matrix
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p out
-          RNA_URL='https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_mrna_seq_fpkm.txt'
-          PROT_URL='https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_protein_quantification.txt'
-          curl -fL --retry 4 --retry-all-errors "$RNA_URL" -o data_mrna_seq_fpkm.txt
-          curl -fL --retry 4 --retry-all-errors "$PROT_URL" -o data_protein_quantification.txt
-          SCRIPT='aW1wb3J0IGNzdixoYXNobGliLGpzb24KZnJvbSBwYXRobGliIGltcG9ydCBQYXRoClRBUkdFVFM9eyJQSEdESCIsIlBTQVQxIiwiUFNQSCJ9Cm91dGRpcj1QYXRoKCJvdXQiKTsgb3V0ZGlyLm1rZGlyKGV4aXN0X29rPVRydWUpCnJlY2VpcHQ9eyJzb3VyY2UiOiJjQmlvUG9ydGFsIERhdGFIdWIgZ2JtX2NwdGFjXzIwMjE7IFdhbmcgZXQgYWwuIDIwMjEgVGFibGUgUzItZGVyaXZlZCBtYXRyaWNlcyIsInRhcmdldHMiOnNvcnRlZChUQVJHRVRTKSwiZmlsZXMiOnt9fQpmb3IgbGFiZWwsZm4sdXJsIGluIFsKICgicm5hIiwiZGF0YV9tcm5hX3NlcV9mcGttLnR4dCIsImh0dHBzOi8vbWVkaWEuZ2l0aHVidXNlcmNvbnRlbnQuY29tL21lZGlhL2NCaW9Qb3J0YWwvZGF0YWh1Yi9yZWZzL2hlYWRzL21hc3Rlci9wdWJsaWMvZ2JtX2NwdGFjXzIwMjEvZGF0YV9tcm5hX3NlcV9mcGttLnR4dCIpLAogKCJwcm90ZWluIiwiZGF0YV9wcm90ZWluX3F1YW50aWZpY2F0aW9uLnR4dCIsImh0dHBzOi8vbWVkaWEuZ2l0aHVidXNlcmNvbnRlbnQuY29tL21lZGlhL2NCaW9Qb3J0YWwvZGF0YWh1Yi9yZWZzL2hlYWRzL21hc3Rlci9wdWJsaWMvZ2JtX2NwdGFjXzIwMjEvZGF0YV9wcm90ZWluX3F1YW50aWZpY2F0aW9uLnR4dCIpXToKIHA9UGF0aChmbikKIGI9cC5yZWFkX2J5dGVzKCkKIGlmIGJbOjIwMF0uc3RhcnRzd2l0aChiInZlcnNpb24gaHR0cHM6Ly9naXQtbGZzLmdpdGh1Yi5jb20vc3BlYyIpOiByYWlzZSBTeXN0ZW1FeGl0KGYie2ZufSByZXR1cm5lZCBMRlMgcG9pbnRlciIpCiB3aXRoIHAub3BlbihuZXdsaW5lPSIiLGVuY29kaW5nPSJ1dGYtOCIpIGFzIGY6CiAgcj1jc3YucmVhZGVyKGYsZGVsaW1pdGVyPSJcdCIpOyBoZWFkZXI9bmV4dChyKTsgcm93cz1bXQogIGZvciByb3cgaW4gcjoKICAgZmlyc3Q9cm93WzptaW4oOCxsZW4ocm93KSldCiAgIGlmIGFueSh4IGluIFRBUkdFVFMgZm9yIHggaW4gZmlyc3QpOiByb3dzLmFwcGVuZChyb3cpCiBpZiBsZW4ocm93cykhPTM6IHJhaXNlIFN5c3RlbUV4aXQoZiJ7bGFiZWx9OiBleHBlY3RlZCAzIHRhcmdldCByb3dzLCBnb3Qge2xlbihyb3dzKX07IGZpcnN0IGNvbHVtbnM9e2hlYWRlcls6OF19IikKIG9wPW91dGRpci9mIntsYWJlbH1fUEhHREhfUFNBVDFfUFNQSC50c3YiCiB3aXRoIG9wLm9wZW4oInciLG5ld2xpbmU9IiIsZW5jb2Rpbmc9InV0Zi04IikgYXMgZjoKICB3PWNzdi53cml0ZXIoZixkZWxpbWl0ZXI9Ilx0IixsaW5ldGVybWluYXRvcj0iXG4iKTsgdy53cml0ZXJvdyhoZWFkZXIpOyB3LndyaXRlcm93cyhyb3dzKQogcmVjZWlwdFsiZmlsZXMiXVtsYWJlbF09eyJ1cmwiOnVybCwiZnVsbF9maWxlbmFtZSI6Zm4sImZ1bGxfc2l6ZSI6cC5zdGF0KCkuc3Rfc2l6ZSwiZnVsbF9zaGEyNTYiOmhhc2hsaWIuc2hhMjU2KGIpLmhleGRpZ2VzdCgpLCJoZWFkZXJfZmlyc3Q4IjpoZWFkZXJbOjhdLCJzZWxlY3RlZF9yb3dzIjpsZW4ocm93cyksInNlbGVjdGVkX2ZpbGUiOm9wLm5hbWUsInNlbGVjdGVkX3NpemUiOm9wLnN0YXQoKS5zdF9zaXplLCJzZWxlY3RlZF9zaGEyNTYiOmhhc2hsaWIuc2hhMjU2KG9wLnJlYWRfYnl0ZXMoKSkuaGV4ZGlnZXN0KCl9ClBhdGgoIm91dC9ybmFfcHJvdGVpbl9hY3F1aXNpdGlvbl9yZWNlaXB0Lmpzb24iKS53cml0ZV90ZXh0KGpzb24uZHVtcHMocmVjZWlwdCxpbmRlbnQ9MiksZW5jb2Rpbmc9InV0Zi04IikK'
-          printf '%s' "$SCRIPT" | base64 -d > extract_targets.py
-          python extract_targets.py
-          sha256sum out/* > out/SHA256SUMS.txt
-          cat out/rna_protein_acquisition_receipt.json
-      - name: Upload acquired target rows
-        uses: actions/upload-artifact@v4
-        with:
-          name: v2.1.2-gbm-rna-protein-targets
-          path: out/
-          retention-days: 7
+          URL='https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_protein_quantification.txt'
+          curl -fL --retry 4 --retry-all-errors "$URL" -o protein.txt
+          echo 'HEADER:'
+          head -n 1 protein.txt | cut -c1-500
+          echo 'TARGET STRING MATCHES:'
+          grep -i -E 'PHGDH|PSAT1|PSPH' protein.txt | cut -c1-1200 || true
+          echo 'FIRST 5 DATA IDS:'
+          sed -n '2,6p' protein.txt | cut -f1
+          echo 'COUNTS:'
+          wc -l protein.txt
+          sha256sum protein.txt
