@@ -1,5 +1,5 @@
 # NeuroMetBench v2.1.1 release-critical repository text/source checksums
-# Frozen public release asset: 0b080042940ef143f1e2dc73fd2722bc0cc006fd4d0d5badee624a1379a007cd  NeuroMetBench_v2.1.1_reproducibility_release.zip
+# Frozen public release asset: beb2a2e53c45bb141f03c30cf8097b33372d454dba86f542253b5a1dcb3f732f  NeuroMetBench_v2.1.1_reproducibility_release.zip
 253dbceb79ad7d9d032004be69dc07eb0a80306e1ab9b056a9d799d252a370d2  .zenodo.json
 6134c93b454a436334261827d3f1be945fee45de1cbb8ce33827ecd7563a22da  CHANGELOG.md
 decd16b917a4c1b8cacb8a3a995d182eb162fca051a751c7381e12a686857b2e  CITATION.cff
