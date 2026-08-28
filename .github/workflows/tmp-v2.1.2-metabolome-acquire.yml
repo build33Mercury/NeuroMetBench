@@ -19,35 +19,16 @@ jobs:
           mkdir -p out
           URL1='https://pmc.ncbi.nlm.nih.gov/articles/PMC8044053/bin/NIHMS1665743-supplement-3.xlsx'
           URL2='https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_metabolome_quantification.txt'
+          SCRIPT1='aW1wb3J0IGhhc2hsaWIsanNvbgpmcm9tIHBhdGhsaWIgaW1wb3J0IFBhdGgKaW1wb3J0IG9wZW5weXhsCnA9UGF0aCgidGFibGVfczIueGxzeCIpCndiPW9wZW5weXhsLmxvYWRfd29ya2Jvb2socCxyZWFkX29ubHk9VHJ1ZSxkYXRhX29ubHk9VHJ1ZSkKcHJlZmVycmVkPVtzIGZvciBzIGluIHdiLnNoZWV0bmFtZXMgaWYgIm1ldGFib2wiIGluIHMubG93ZXIoKSBhbmQgIm5vcm1hbCIgaW4gcy5sb3dlcigpXQppZiBub3QgcHJlZmVycmVkOiBwcmVmZXJyZWQ9W3MgZm9yIHMgaW4gd2Iuc2hlZXRuYW1lcyBpZiAibWV0YWJvbCIgaW4gcy5sb3dlcigpXQppZiBub3QgcHJlZmVycmVkOiByYWlzZSBTeXN0ZW1FeGl0KCJObyBtZXRhYm9sb21lIHNoZWV0IGZvdW5kIikKbmFtZT1wcmVmZXJyZWRbMF07IHdzPXdiW25hbWVdCm91dD1QYXRoKCJvdXQvbWV0YWJvbG9tZV9ub3JtYWxpemVkX2Zyb21fd2FuZ190YWJsZV9zMi50c3YiKQp3aXRoIG91dC5vcGVuKCJ3IixlbmNvZGluZz0idXRmLTgiLG5ld2xpbmU9IiIpIGFzIGY6CiAgICBmb3Igcm93IGluIHdzLml0ZXJfcm93cyh2YWx1ZXNfb25seT1UcnVlKToKICAgICAgICBmLndyaXRlKCJcXHQiLmpvaW4oIiIgaWYgdiBpcyBOb25lIGVsc2Ugc3RyKHYpLnJlcGxhY2UoIlxcdCIsIiAiKSBmb3IgdiBpbiByb3cpKyJcXG4iKQpyZWNlaXB0PXsic291cmNlIjoiV2FuZyBldCBhbC4gMjAyMSBDYW5jZXIgQ2VsbCBUYWJsZSBTMiB2aWEgUE1DIiwidXJsIjoiaHR0cHM6Ly9wbWMubmNiaS5ubG0ubmloLmdvdi9hcnRpY2xlcy9QTUM4MDQ0MDUzL2Jpbi9OSUhNUzE2NjU3NDMtc3VwcGxlbWVudC0zLnhsc3giLCJkb3dubG9hZF9maWxlbmFtZSI6cC5uYW1lLCJkb3dubG9hZF9zaXplIjpwLnN0YXQoKS5zdF9zaXplLCJkb3dubG9hZF9zaGEyNTYiOmhhc2hsaWIuc2hhMjU2KHAucmVhZF9ieXRlcygpKS5oZXhkaWdlc3QoKSwic2hlZXQiOm5hbWUsInNoZWV0X25hbWVzIjp3Yi5zaGVldG5hbWVzLCJleHRyYWN0ZWRfZmlsZSI6b3V0Lm5hbWUsImV4dHJhY3RlZF9zaXplIjpvdXQuc3RhdCgpLnN0X3NpemUsImV4dHJhY3RlZF9zaGEyNTYiOmhhc2hsaWIuc2hhMjU2KG91dC5yZWFkX2J5dGVzKCkpLmhleGRpZ2VzdCgpfQpQYXRoKCJvdXQvYWNxdWlzaXRpb25fcmVjZWlwdC5qc29uIikud3JpdGVfdGV4dChqc29uLmR1bXBzKHJlY2VpcHQsaW5kZW50PTIpLGVuY29kaW5nPSJ1dGYtOCIpCg=='
+          SCRIPT2='aW1wb3J0IGhhc2hsaWIsanNvbgpmcm9tIHBhdGhsaWIgaW1wb3J0IFBhdGgKcD1QYXRoKCJvdXQvbWV0YWJvbG9tZV9ub3JtYWxpemVkX2Zyb21fY2Jpb3BvcnRhbC50eHQiKQppZiBwLnJlYWRfYnl0ZXMoKVs6MjAwXS5zdGFydHN3aXRoKGIidmVyc2lvbiBodHRwczovL2dpdC1sZnMuZ2l0aHViLmNvbS9zcGVjIik6IHJhaXNlIFN5c3RlbUV4aXQoImNCaW9Qb3J0YWwgVVJMIHJldHVybmVkIExGUyBwb2ludGVyLCBub3QgY29udGVudCIpCnJlY2VpcHQ9eyJzb3VyY2UiOiJjQmlvUG9ydGFsIERhdGFIdWIgZ2JtX2NwdGFjXzIwMjEgcHVibGljIG1ldGFib2xvbWUgbWF0cml4OyBXYW5nIGV0IGFsLiAyMDIxIGRlcml2ZWQgZGF0YSIsInVybCI6Imh0dHBzOi8vbWVkaWEuZ2l0aHVidXNlcmNvbnRlbnQuY29tL21lZGlhL2NCaW9Qb3J0YWwvZGF0YWh1Yi9yZWZzL2hlYWRzL21hc3Rlci9wdWJsaWMvZ2JtX2NwdGFjXzIwMjEvZGF0YV9tZXRhYm9sb21lX3F1YW50aWZpY2F0aW9uLnR4dCIsImRvd25sb2FkX2ZpbGVuYW1lIjpwLm5hbWUsImRvd25sb2FkX3NpemUiOnAuc3RhdCgpLnN0X3NpemUsImRvd25sb2FkX3NoYTI1NiI6aGFzaGxpYi5zaGEyNTYocC5yZWFkX2J5dGVzKCkpLmhleGRpZ2VzdCgpfQpQYXRoKCJvdXQvYWNxdWlzaXRpb25fcmVjZWlwdC5qc29uIikud3JpdGVfdGV4dChqc29uLmR1bXBzKHJlY2VpcHQsaW5kZW50PTIpLGVuY29kaW5nPSJ1dGYtOCIpCg=='
           if curl -fL --retry 4 --retry-all-errors "$URL1" -o table_s2.xlsx; then
             python -m pip install --quiet openpyxl
-            python - <<'PY'
-import hashlib, json
-from pathlib import Path
-import openpyxl
-p=Path('table_s2.xlsx')
-wb=openpyxl.load_workbook(p, read_only=True, data_only=True)
-preferred=[s for s in wb.sheetnames if 'metabol' in s.lower() and 'normal' in s.lower()]
-if not preferred: preferred=[s for s in wb.sheetnames if 'metabol' in s.lower()]
-if not preferred: raise SystemExit('No metabolome sheet found')
-name=preferred[0]; ws=wb[name]
-out=Path('out/metabolome_normalized_from_wang_table_s2.tsv')
-with out.open('w', encoding='utf-8', newline='') as f:
-    for row in ws.iter_rows(values_only=True):
-        f.write('\t'.join('' if v is None else str(v).replace('\t',' ') for v in row)+'\n')
-receipt={'source':'Wang et al. 2021 Cancer Cell Table S2 via PMC','url':'''https://pmc.ncbi.nlm.nih.gov/articles/PMC8044053/bin/NIHMS1665743-supplement-3.xlsx''','download_filename':p.name,'download_size':p.stat().st_size,'download_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'sheet':name,'sheet_names':wb.sheetnames,'extracted_file':out.name,'extracted_size':out.stat().st_size,'extracted_sha256':hashlib.sha256(out.read_bytes()).hexdigest()}
-Path('out/acquisition_receipt.json').write_text(json.dumps(receipt,indent=2),encoding='utf-8')
-PY
+            printf '%s' "$SCRIPT1" | base64 -d > extract.py
+            python extract.py
           else
             curl -fL --retry 4 --retry-all-errors "$URL2" -o out/metabolome_normalized_from_cbioportal.txt
-            python - <<'PY'
-import hashlib,json
-from pathlib import Path
-p=Path('out/metabolome_normalized_from_cbioportal.txt')
-if p.read_bytes()[:200].startswith(b'version https://git-lfs.github.com/spec'): raise SystemExit('cBioPortal URL returned LFS pointer, not content')
-receipt={'source':'cBioPortal DataHub gbm_cptac_2021 public metabolome matrix; Wang et al. 2021 derived data','url':'''https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_metabolome_quantification.txt''','download_filename':p.name,'download_size':p.stat().st_size,'download_sha256':hashlib.sha256(p.read_bytes()).hexdigest()}
-Path('out/acquisition_receipt.json').write_text(json.dumps(receipt,indent=2),encoding='utf-8')
-PY
+            printf '%s' "$SCRIPT2" | base64 -d > inspect.py
+            python inspect.py
           fi
           sha256sum out/* > out/SHA256SUMS.txt
           cat out/acquisition_receipt.json
