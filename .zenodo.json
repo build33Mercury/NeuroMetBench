@@ -11,7 +11,7 @@
       "orcid": "0009-0009-9517-636X"
     }
   ],
-  "license": "MIT",
+  "license": "mit",
   "keywords": [
     "integrative genomics",
     "transcriptomics",
@@ -25,8 +25,8 @@
   "related_identifiers": [
     {
       "identifier": "https://github.com/build33Mercury/NeuroMetBench",
-      "relation": "issupplementto",
-      "scheme": "url"
+      "relation": "isSupplementTo",
+      "resource_type": "software"
     }
   ]
 }
