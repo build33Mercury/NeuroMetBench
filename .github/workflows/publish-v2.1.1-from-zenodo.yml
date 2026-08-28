@@ -23,8 +23,8 @@ jobs:
       - name: Locate and verify Zenodo v2.1.1 archive
         env:
           EXPECTED_NAME: NeuroMetBench_v2.1.1_reproducibility_release.zip
-          EXPECTED_SHA256: beb2a2e53c45bb141f03c30cf8097b33372d454dba86f542253b5a1dcb3f732f
-          EXPECTED_SIZE: '36623018'
+          EXPECTED_SHA256: cd809679d268674d45aa1c1e2f23de32146f0c59261b5137b5f25d7672848bef
+          EXPECTED_SIZE: '36623555'
           ZENODO_CONCEPT_RECID: '21830887'
         run: |
           python - <<'PY'
@@ -69,8 +69,8 @@ jobs:
             exit 1
           fi
           printf '%s  %s\nSize: %s bytes\n' \
-            'beb2a2e53c45bb141f03c30cf8097b33372d454dba86f542253b5a1dcb3f732f' \
-            'NeuroMetBench_v2.1.1_reproducibility_release.zip' '36623018' > /tmp/RELEASE_ASSET_SHA256.txt
+            'cd809679d268674d45aa1c1e2f23de32146f0c59261b5137b5f25d7672848bef' \
+            'NeuroMetBench_v2.1.1_reproducibility_release.zip' '36623555' > /tmp/RELEASE_ASSET_SHA256.txt
           gh release create v2.1.1 \
             /tmp/NeuroMetBench_v2.1.1_reproducibility_release.zip \
             /tmp/RELEASE_ASSET_SHA256.txt \
@@ -82,8 +82,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           EXPECTED_NAME: NeuroMetBench_v2.1.1_reproducibility_release.zip
-          EXPECTED_SHA256: beb2a2e53c45bb141f03c30cf8097b33372d454dba86f542253b5a1dcb3f732f
-          EXPECTED_SIZE: '36623018'
+          EXPECTED_SHA256: cd809679d268674d45aa1c1e2f23de32146f0c59261b5137b5f25d7672848bef
+          EXPECTED_SIZE: '36623555'
         run: |
           mkdir -p /tmp/github-public
           gh release download v2.1.1 --pattern "$EXPECTED_NAME" --dir /tmp/github-public
