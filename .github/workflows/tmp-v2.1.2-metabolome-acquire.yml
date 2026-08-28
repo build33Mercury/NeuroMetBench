@@ -1,4 +1,4 @@
-name: Temporary v2.1.2 metabolome acquisition
+name: Temporary v2.1.2 RNA protein acquisition
 
 on:
   push:
@@ -12,29 +12,23 @@ jobs:
   acquire:
     runs-on: ubuntu-latest
     steps:
-      - name: Acquire official/public GBM metabolome table
+      - name: Acquire target RNA and protein rows from Wang Table S2-derived public matrices
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p out
-          URL1='https://pmc.ncbi.nlm.nih.gov/articles/PMC8044053/bin/NIHMS1665743-supplement-3.xlsx'
-          URL2='https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_metabolome_quantification.txt'
-          SCRIPT1='aW1wb3J0IGhhc2hsaWIsanNvbgpmcm9tIHBhdGhsaWIgaW1wb3J0IFBhdGgKaW1wb3J0IG9wZW5weXhsCnA9UGF0aCgidGFibGVfczIueGxzeCIpCndiPW9wZW5weXhsLmxvYWRfd29ya2Jvb2socCxyZWFkX29ubHk9VHJ1ZSxkYXRhX29ubHk9VHJ1ZSkKcHJlZmVycmVkPVtzIGZvciBzIGluIHdiLnNoZWV0bmFtZXMgaWYgIm1ldGFib2wiIGluIHMubG93ZXIoKSBhbmQgIm5vcm1hbCIgaW4gcy5sb3dlcigpXQppZiBub3QgcHJlZmVycmVkOiBwcmVmZXJyZWQ9W3MgZm9yIHMgaW4gd2Iuc2hlZXRuYW1lcyBpZiAibWV0YWJvbCIgaW4gcy5sb3dlcigpXQppZiBub3QgcHJlZmVycmVkOiByYWlzZSBTeXN0ZW1FeGl0KCJObyBtZXRhYm9sb21lIHNoZWV0IGZvdW5kIikKbmFtZT1wcmVmZXJyZWRbMF07IHdzPXdiW25hbWVdCm91dD1QYXRoKCJvdXQvbWV0YWJvbG9tZV9ub3JtYWxpemVkX2Zyb21fd2FuZ190YWJsZV9zMi50c3YiKQp3aXRoIG91dC5vcGVuKCJ3IixlbmNvZGluZz0idXRmLTgiLG5ld2xpbmU9IiIpIGFzIGY6CiAgICBmb3Igcm93IGluIHdzLml0ZXJfcm93cyh2YWx1ZXNfb25seT1UcnVlKToKICAgICAgICBmLndyaXRlKCJcXHQiLmpvaW4oIiIgaWYgdiBpcyBOb25lIGVsc2Ugc3RyKHYpLnJlcGxhY2UoIlxcdCIsIiAiKSBmb3IgdiBpbiByb3cpKyJcXG4iKQpyZWNlaXB0PXsic291cmNlIjoiV2FuZyBldCBhbC4gMjAyMSBDYW5jZXIgQ2VsbCBUYWJsZSBTMiB2aWEgUE1DIiwidXJsIjoiaHR0cHM6Ly9wbWMubmNiaS5ubG0ubmloLmdvdi9hcnRpY2xlcy9QTUM4MDQ0MDUzL2Jpbi9OSUhNUzE2NjU3NDMtc3VwcGxlbWVudC0zLnhsc3giLCJkb3dubG9hZF9maWxlbmFtZSI6cC5uYW1lLCJkb3dubG9hZF9zaXplIjpwLnN0YXQoKS5zdF9zaXplLCJkb3dubG9hZF9zaGEyNTYiOmhhc2hsaWIuc2hhMjU2KHAucmVhZF9ieXRlcygpKS5oZXhkaWdlc3QoKSwic2hlZXQiOm5hbWUsInNoZWV0X25hbWVzIjp3Yi5zaGVldG5hbWVzLCJleHRyYWN0ZWRfZmlsZSI6b3V0Lm5hbWUsImV4dHJhY3RlZF9zaXplIjpvdXQuc3RhdCgpLnN0X3NpemUsImV4dHJhY3RlZF9zaGEyNTYiOmhhc2hsaWIuc2hhMjU2KG91dC5yZWFkX2J5dGVzKCkpLmhleGRpZ2VzdCgpfQpQYXRoKCJvdXQvYWNxdWlzaXRpb25fcmVjZWlwdC5qc29uIikud3JpdGVfdGV4dChqc29uLmR1bXBzKHJlY2VpcHQsaW5kZW50PTIpLGVuY29kaW5nPSJ1dGYtOCIpCg=='
-          SCRIPT2='aW1wb3J0IGhhc2hsaWIsanNvbgpmcm9tIHBhdGhsaWIgaW1wb3J0IFBhdGgKcD1QYXRoKCJvdXQvbWV0YWJvbG9tZV9ub3JtYWxpemVkX2Zyb21fY2Jpb3BvcnRhbC50eHQiKQppZiBwLnJlYWRfYnl0ZXMoKVs6MjAwXS5zdGFydHN3aXRoKGIidmVyc2lvbiBodHRwczovL2dpdC1sZnMuZ2l0aHViLmNvbS9zcGVjIik6IHJhaXNlIFN5c3RlbUV4aXQoImNCaW9Qb3J0YWwgVVJMIHJldHVybmVkIExGUyBwb2ludGVyLCBub3QgY29udGVudCIpCnJlY2VpcHQ9eyJzb3VyY2UiOiJjQmlvUG9ydGFsIERhdGFIdWIgZ2JtX2NwdGFjXzIwMjEgcHVibGljIG1ldGFib2xvbWUgbWF0cml4OyBXYW5nIGV0IGFsLiAyMDIxIGRlcml2ZWQgZGF0YSIsInVybCI6Imh0dHBzOi8vbWVkaWEuZ2l0aHVidXNlcmNvbnRlbnQuY29tL21lZGlhL2NCaW9Qb3J0YWwvZGF0YWh1Yi9yZWZzL2hlYWRzL21hc3Rlci9wdWJsaWMvZ2JtX2NwdGFjXzIwMjEvZGF0YV9tZXRhYm9sb21lX3F1YW50aWZpY2F0aW9uLnR4dCIsImRvd25sb2FkX2ZpbGVuYW1lIjpwLm5hbWUsImRvd25sb2FkX3NpemUiOnAuc3RhdCgpLnN0X3NpemUsImRvd25sb2FkX3NoYTI1NiI6aGFzaGxpYi5zaGEyNTYocC5yZWFkX2J5dGVzKCkpLmhleGRpZ2VzdCgpfQpQYXRoKCJvdXQvYWNxdWlzaXRpb25fcmVjZWlwdC5qc29uIikud3JpdGVfdGV4dChqc29uLmR1bXBzKHJlY2VpcHQsaW5kZW50PTIpLGVuY29kaW5nPSJ1dGYtOCIpCg=='
-          if curl -fL --retry 4 --retry-all-errors "$URL1" -o table_s2.xlsx; then
-            python -m pip install --quiet openpyxl
-            printf '%s' "$SCRIPT1" | base64 -d > extract.py
-            python extract.py
-          else
-            curl -fL --retry 4 --retry-all-errors "$URL2" -o out/metabolome_normalized_from_cbioportal.txt
-            printf '%s' "$SCRIPT2" | base64 -d > inspect.py
-            python inspect.py
-          fi
+          RNA_URL='https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_mrna_seq_fpkm.txt'
+          PROT_URL='https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_protein_quantification.txt'
+          curl -fL --retry 4 --retry-all-errors "$RNA_URL" -o data_mrna_seq_fpkm.txt
+          curl -fL --retry 4 --retry-all-errors "$PROT_URL" -o data_protein_quantification.txt
+          SCRIPT='aW1wb3J0IGNzdixoYXNobGliLGpzb24KZnJvbSBwYXRobGliIGltcG9ydCBQYXRoClRBUkdFVFM9eyJQSEdESCIsIlBTQVQxIiwiUFNQSCJ9Cm91dGRpcj1QYXRoKCJvdXQiKTsgb3V0ZGlyLm1rZGlyKGV4aXN0X29rPVRydWUpCnJlY2VpcHQ9eyJzb3VyY2UiOiJjQmlvUG9ydGFsIERhdGFIdWIgZ2JtX2NwdGFjXzIwMjE7IFdhbmcgZXQgYWwuIDIwMjEgVGFibGUgUzItZGVyaXZlZCBtYXRyaWNlcyIsInRhcmdldHMiOnNvcnRlZChUQVJHRVRTKSwiZmlsZXMiOnt9fQpmb3IgbGFiZWwsZm4sdXJsIGluIFsKICgicm5hIiwiZGF0YV9tcm5hX3NlcV9mcGttLnR4dCIsImh0dHBzOi8vbWVkaWEuZ2l0aHVidXNlcmNvbnRlbnQuY29tL21lZGlhL2NCaW9Qb3J0YWwvZGF0YWh1Yi9yZWZzL2hlYWRzL21hc3Rlci9wdWJsaWMvZ2JtX2NwdGFjXzIwMjEvZGF0YV9tcm5hX3NlcV9mcGttLnR4dCIpLAogKCJwcm90ZWluIiwiZGF0YV9wcm90ZWluX3F1YW50aWZpY2F0aW9uLnR4dCIsImh0dHBzOi8vbWVkaWEuZ2l0aHVidXNlcmNvbnRlbnQuY29tL21lZGlhL2NCaW9Qb3J0YWwvZGF0YWh1Yi9yZWZzL2hlYWRzL21hc3Rlci9wdWJsaWMvZ2JtX2NwdGFjXzIwMjEvZGF0YV9wcm90ZWluX3F1YW50aWZpY2F0aW9uLnR4dCIpXToKIHA9UGF0aChmbikKIGI9cC5yZWFkX2J5dGVzKCkKIGlmIGJbOjIwMF0uc3RhcnRzd2l0aChiInZlcnNpb24gaHR0cHM6Ly9naXQtbGZzLmdpdGh1Yi5jb20vc3BlYyIpOiByYWlzZSBTeXN0ZW1FeGl0KGYie2ZufSByZXR1cm5lZCBMRlMgcG9pbnRlciIpCiB3aXRoIHAub3BlbihuZXdsaW5lPSIiLGVuY29kaW5nPSJ1dGYtOCIpIGFzIGY6CiAgcj1jc3YucmVhZGVyKGYsZGVsaW1pdGVyPSJcdCIpOyBoZWFkZXI9bmV4dChyKTsgcm93cz1bXQogIGZvciByb3cgaW4gcjoKICAgZmlyc3Q9cm93WzptaW4oOCxsZW4ocm93KSldCiAgIGlmIGFueSh4IGluIFRBUkdFVFMgZm9yIHggaW4gZmlyc3QpOiByb3dzLmFwcGVuZChyb3cpCiBpZiBsZW4ocm93cykhPTM6IHJhaXNlIFN5c3RlbUV4aXQoZiJ7bGFiZWx9OiBleHBlY3RlZCAzIHRhcmdldCByb3dzLCBnb3Qge2xlbihyb3dzKX07IGZpcnN0IGNvbHVtbnM9e2hlYWRlcls6OF19IikKIG9wPW91dGRpci9mIntsYWJlbH1fUEhHREhfUFNBVDFfUFNQSC50c3YiCiB3aXRoIG9wLm9wZW4oInciLG5ld2xpbmU9IiIsZW5jb2Rpbmc9InV0Zi04IikgYXMgZjoKICB3PWNzdi53cml0ZXIoZixkZWxpbWl0ZXI9Ilx0IixsaW5ldGVybWluYXRvcj0iXG4iKTsgdy53cml0ZXJvdyhoZWFkZXIpOyB3LndyaXRlcm93cyhyb3dzKQogcmVjZWlwdFsiZmlsZXMiXVtsYWJlbF09eyJ1cmwiOnVybCwiZnVsbF9maWxlbmFtZSI6Zm4sImZ1bGxfc2l6ZSI6cC5zdGF0KCkuc3Rfc2l6ZSwiZnVsbF9zaGEyNTYiOmhhc2hsaWIuc2hhMjU2KGIpLmhleGRpZ2VzdCgpLCJoZWFkZXJfZmlyc3Q4IjpoZWFkZXJbOjhdLCJzZWxlY3RlZF9yb3dzIjpsZW4ocm93cyksInNlbGVjdGVkX2ZpbGUiOm9wLm5hbWUsInNlbGVjdGVkX3NpemUiOm9wLnN0YXQoKS5zdF9zaXplLCJzZWxlY3RlZF9zaGEyNTYiOmhhc2hsaWIuc2hhMjU2KG9wLnJlYWRfYnl0ZXMoKSkuaGV4ZGlnZXN0KCl9ClBhdGgoIm91dC9ybmFfcHJvdGVpbl9hY3F1aXNpdGlvbl9yZWNlaXB0Lmpzb24iKS53cml0ZV90ZXh0KGpzb24uZHVtcHMocmVjZWlwdCxpbmRlbnQ9MiksZW5jb2Rpbmc9InV0Zi04IikK'
+          printf '%s' "$SCRIPT" | base64 -d > extract_targets.py
+          python extract_targets.py
           sha256sum out/* > out/SHA256SUMS.txt
-          cat out/acquisition_receipt.json
-      - name: Upload acquired metabolome artifact
+          cat out/rna_protein_acquisition_receipt.json
+      - name: Upload acquired target rows
         uses: actions/upload-artifact@v4
         with:
-          name: v2.1.2-gbm-metabolome-acquisition
+          name: v2.1.2-gbm-rna-protein-targets
           path: out/
           retention-days: 7
