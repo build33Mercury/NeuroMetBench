@@ -12,82 +12,80 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - name: Inspect Zenodo record and verify public bytes
+      - name: Verify Zenodo and GitHub public bytes
         shell: bash
         run: |
-          set -u
+          set -euo pipefail
           EXPECTED_NAME='NeuroMetBench_v2.1.1_reproducibility_release.zip'
           EXPECTED_SIZE='36623555'
           EXPECTED_SHA='cd809679d268674d45aa1c1e2f23de32146f0c59261b5137b5f25d7672848bef'
+          EXPECTED_DOI='10.5281/zenodo.22141290'
+          EXPECTED_CONCEPT='10.5281/zenodo.21830887'
           ZENODO_RECORD='22141290'
           GH_URL='https://github.com/build33Mercury/NeuroMetBench/releases/download/v2.1.1/NeuroMetBench_v2.1.1_reproducibility_release.zip'
           : > verification_report.txt
 
-          if ! curl -fsSL --retry 5 --retry-all-errors "https://zenodo.org/api/records/${ZENODO_RECORD}" -o zenodo.json; then
-            echo 'ZENODO_API_FETCH=FAIL' >> verification_report.txt
-            exit 20
-          fi
-          echo 'ZENODO_API_FETCH=PASS' >> verification_report.txt
-
+          curl -fsSL --retry 5 --retry-all-errors "https://zenodo.org/api/records/${ZENODO_RECORD}" -o zenodo.json
           python - <<'PY'
-          import json
+          import json, sys
           j=json.load(open('zenodo.json',encoding='utf-8'))
+          expected_name='NeuroMetBench_v2.1.1_reproducibility_release.zip'
+          checks={
+            'ZENODO_STATUS_PUBLISHED': j.get('status')=='published' and j.get('submitted') is True,
+            'ZENODO_VERSION': (j.get('metadata') or {}).get('version')=='2.1.1',
+            'ZENODO_VERSION_DOI': j.get('doi')=='10.5281/zenodo.22141290',
+            'ZENODO_CONCEPT_DOI': j.get('conceptdoi')=='10.5281/zenodo.21830887',
+            'ZENODO_TITLE': (j.get('metadata') or {}).get('title')=='NeuroMetBench reproducibility package',
+          }
+          files=j.get('files') or []
+          f=next((x for x in files if x.get('key')==expected_name),None)
+          checks['ZENODO_SINGLE_EXPECTED_FILE']=len(files)==1 and f is not None
+          if f is None:
+              raise SystemExit('expected Zenodo file missing')
+          link=(f.get('links') or {}).get('self')
+          if not link:
+              raise SystemExit('Zenodo content link missing')
+          with open('zenodo_download_url.txt','w') as out: out.write(link)
           m=j.get('metadata') or {}
-          p=j.get('pids') or {}
-          parent=j.get('parent') or {}
-          files=(j.get('files') or {}).get('entries') or {}
-          expected='NeuroMetBench_v2.1.1_reproducibility_release.zip'
-          f=files.get(expected) or {}
-          def doi_from(x):
-              d=(x or {}).get('doi') if isinstance(x,dict) else None
-              if isinstance(d,dict): return d.get('identifier')
-              if isinstance(d,str): return d
-          out=open('verification_report.txt','a',encoding='utf-8')
-          out.write(f"ZENODO_TITLE={m.get('title')}\n")
-          out.write(f"ZENODO_VERSION={m.get('version')}\n")
-          out.write(f"ZENODO_VERSION_DOI={doi_from(p) or m.get('doi')}\n")
-          out.write(f"ZENODO_PARENT_PIDS={json.dumps(parent.get('pids'),sort_keys=True)}\n")
-          out.write(f"ZENODO_FILE_KEYS={json.dumps(sorted(files.keys()))}\n")
-          out.write(f"ZENODO_FILE_SIZE_METADATA={f.get('size')}\n")
-          out.write(f"ZENODO_FILE_CHECKSUM_METADATA={f.get('checksum')}\n")
-          link=(f.get('links') or {}).get('content')
-          out.write(f"ZENODO_FILE_LINK_PRESENT={bool(link)}\n")
-          out.close()
-          if link:
-              open('zenodo_download_url.txt','w').write(link)
+          with open('verification_report.txt','w',encoding='utf-8') as out:
+              out.write(f"ZENODO_TITLE={m.get('title')}\n")
+              out.write(f"ZENODO_VERSION={m.get('version')}\n")
+              out.write(f"ZENODO_VERSION_DOI={j.get('doi')}\n")
+              out.write(f"ZENODO_CONCEPT_DOI={j.get('conceptdoi')}\n")
+              out.write(f"ZENODO_STATUS={j.get('status')}\n")
+              out.write(f"ZENODO_FILENAME={f.get('key')}\n")
+              out.write(f"ZENODO_SIZE_METADATA={f.get('size')}\n")
+              out.write(f"ZENODO_MD5_METADATA={f.get('checksum')}\n")
+              out.write(f"ZENODO_LICENSE={(m.get('license') or {}).get('id')}\n")
+              out.write(f"ZENODO_ACCESS_RIGHT={m.get('access_right')}\n")
+              out.write(f"ZENODO_LANGUAGE={m.get('language')}\n")
+              out.write(f"ZENODO_KEYWORDS={m.get('keywords')}\n")
+              for k,v in checks.items(): out.write(f"{k}_CHECK={'PASS' if v else 'FAIL'}\n")
+          if not all(checks.values()):
+              sys.exit(21)
           PY
 
-          if [ -s zenodo_download_url.txt ]; then
-            ZURL="$(cat zenodo_download_url.txt)"
-            if curl -fL --retry 5 --retry-all-errors "$ZURL" -o zenodo.zip; then
-              ZSIZE="$(stat -c%s zenodo.zip)"
-              ZSHA="$(sha256sum zenodo.zip | awk '{print $1}')"
-              printf 'ZENODO_SIZE=%s\nZENODO_SHA256=%s\n' "$ZSIZE" "$ZSHA" >> verification_report.txt
-              [ "$ZSIZE" = "$EXPECTED_SIZE" ] && echo 'ZENODO_SIZE_MATCH=PASS' >> verification_report.txt || echo 'ZENODO_SIZE_MATCH=FAIL' >> verification_report.txt
-              [ "$ZSHA" = "$EXPECTED_SHA" ] && echo 'ZENODO_SHA256_MATCH=PASS' >> verification_report.txt || echo 'ZENODO_SHA256_MATCH=FAIL' >> verification_report.txt
-            else
-              echo 'ZENODO_DOWNLOAD=FAIL' >> verification_report.txt
-            fi
-          fi
+          curl -fL --retry 5 --retry-all-errors "$(cat zenodo_download_url.txt)" -o zenodo.zip
+          ZSIZE="$(stat -c%s zenodo.zip)"
+          ZSHA="$(sha256sum zenodo.zip | awk '{print $1}')"
+          printf 'ZENODO_SIZE=%s\nZENODO_SHA256=%s\n' "$ZSIZE" "$ZSHA" >> verification_report.txt
+          test "$ZSIZE" = "$EXPECTED_SIZE"
+          test "$ZSHA" = "$EXPECTED_SHA"
+          echo 'ZENODO_PUBLIC_BYTES=PASS' >> verification_report.txt
 
-          if curl -fL --retry 5 --retry-all-errors "$GH_URL" -o github.zip; then
-            GSIZE="$(stat -c%s github.zip)"
-            GSHA="$(sha256sum github.zip | awk '{print $1}')"
-            printf 'GITHUB_SIZE=%s\nGITHUB_SHA256=%s\n' "$GSIZE" "$GSHA" >> verification_report.txt
-            [ "$GSIZE" = "$EXPECTED_SIZE" ] && echo 'GITHUB_SIZE_MATCH=PASS' >> verification_report.txt || echo 'GITHUB_SIZE_MATCH=FAIL' >> verification_report.txt
-            [ "$GSHA" = "$EXPECTED_SHA" ] && echo 'GITHUB_SHA256_MATCH=PASS' >> verification_report.txt || echo 'GITHUB_SHA256_MATCH=FAIL' >> verification_report.txt
-          else
-            echo 'GITHUB_DOWNLOAD=FAIL' >> verification_report.txt
-          fi
+          curl -fL --retry 5 --retry-all-errors "$GH_URL" -o github.zip
+          GSIZE="$(stat -c%s github.zip)"
+          GSHA="$(sha256sum github.zip | awk '{print $1}')"
+          printf 'GITHUB_SIZE=%s\nGITHUB_SHA256=%s\n' "$GSIZE" "$GSHA" >> verification_report.txt
+          test "$GSIZE" = "$EXPECTED_SIZE"
+          test "$GSHA" = "$EXPECTED_SHA"
+          echo 'GITHUB_PUBLIC_BYTES=PASS' >> verification_report.txt
 
-          if [ -f zenodo.zip ] && [ -f github.zip ] && cmp -s zenodo.zip github.zip; then
-            echo 'CROSS_HOST_BYTE_IDENTITY=PASS' >> verification_report.txt
-          else
-            echo 'CROSS_HOST_BYTE_IDENTITY=FAIL' >> verification_report.txt
-          fi
+          cmp -s zenodo.zip github.zip
+          echo 'CROSS_HOST_BYTE_IDENTITY=PASS' >> verification_report.txt
           cat verification_report.txt
 
-      - name: Upload verification diagnostics
+      - name: Upload verification report
         if: always()
         uses: actions/upload-artifact@v4
         with:
