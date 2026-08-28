@@ -16,8 +16,8 @@ Version 2.1.1 is a corrective reproducibility and manuscript-synchronization rel
 
 `NeuroMetBench_v2.1.1_reproducibility_release.zip`
 
-- Size: 36,626,191 bytes
-- SHA-256: `0b080042940ef143f1e2dc73fd2722bc0cc006fd4d0d5badee624a1379a007cd`
+- Size: 36,623,018 bytes
+- SHA-256: `beb2a2e53c45bb141f03c30cf8097b33372d454dba86f542253b5a1dcb3f732f`
 
 ## Scientific results
 
