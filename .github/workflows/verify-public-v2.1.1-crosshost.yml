@@ -1,0 +1,83 @@
+name: Verify public v2.1.1 cross-host identity
+
+on:
+  push:
+    branches:
+      - verify-public-v2.1.1-zenodo-run
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify Zenodo and GitHub public assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXPECTED_NAME='NeuroMetBench_v2.1.1_reproducibility_release.zip'
+          EXPECTED_SIZE='36623555'
+          EXPECTED_SHA='cd809679d268674d45aa1c1e2f23de32146f0c59261b5137b5f25d7672848bef'
+          ZENODO_RECORD='22141290'
+          ZENODO_DOI='10.5281/zenodo.22141290'
+          CONCEPT_DOI='10.5281/zenodo.21830887'
+          GH_URL='https://github.com/build33Mercury/NeuroMetBench/releases/download/v2.1.1/NeuroMetBench_v2.1.1_reproducibility_release.zip'
+
+          curl -fsSL --retry 5 --retry-all-errors "https://zenodo.org/api/records/${ZENODO_RECORD}" -o zenodo.json
+          python - <<'PY'
+          import json, sys
+          j=json.load(open('zenodo.json',encoding='utf-8'))
+          expected_name='NeuroMetBench_v2.1.1_reproducibility_release.zip'
+          expected_doi='10.5281/zenodo.22141290'
+          expected_concept='10.5281/zenodo.21830887'
+          version=(j.get('metadata') or {}).get('version')
+          doi=((j.get('pids') or {}).get('doi') or {}).get('identifier') or (j.get('metadata') or {}).get('doi')
+          parent=((j.get('parent') or {}).get('pids') or {}).get('doi') or {}
+          concept=parent.get('identifier') if isinstance(parent,dict) else None
+          title=(j.get('metadata') or {}).get('title')
+          files=(j.get('files') or {}).get('entries') or {}
+          f=files.get(expected_name)
+          if f is None:
+              print('ZENODO_FILE_MISSING', file=sys.stderr); sys.exit(10)
+          link=(f.get('links') or {}).get('content')
+          if not link:
+              print('ZENODO_FILE_LINK_MISSING', file=sys.stderr); sys.exit(11)
+          if version != '2.1.1':
+              print(f'ZENODO_VERSION_FAIL got={version!r}', file=sys.stderr); sys.exit(12)
+          if doi != expected_doi:
+              print(f'ZENODO_DOI_FAIL got={doi!r}', file=sys.stderr); sys.exit(13)
+          if concept != expected_concept:
+              print(f'ZENODO_CONCEPT_DOI_FAIL got={concept!r}', file=sys.stderr); sys.exit(14)
+          open('zenodo_download_url.txt','w').write(link)
+          with open('verification_report.txt','w') as out:
+              out.write(f'ZENODO_TITLE={title}\n')
+              out.write(f'ZENODO_VERSION={version}\n')
+              out.write(f'ZENODO_VERSION_DOI={doi}\n')
+              out.write(f'ZENODO_CONCEPT_DOI={concept}\n')
+              out.write(f'ZENODO_FILENAME={expected_name}\n')
+          PY
+
+          ZURL="$(cat zenodo_download_url.txt)"
+          curl -fL --retry 5 --retry-all-errors "$ZURL" -o zenodo.zip
+          ZSIZE="$(stat -c%s zenodo.zip)"
+          ZSHA="$(sha256sum zenodo.zip | awk '{print $1}')"
+          printf 'ZENODO_SIZE=%s\nZENODO_SHA256=%s\n' "$ZSIZE" "$ZSHA" >> verification_report.txt
+          test "$ZSIZE" = "$EXPECTED_SIZE"
+          test "$ZSHA" = "$EXPECTED_SHA"
+
+          curl -fL --retry 5 --retry-all-errors "$GH_URL" -o github.zip
+          GSIZE="$(stat -c%s github.zip)"
+          GSHA="$(sha256sum github.zip | awk '{print $1}')"
+          printf 'GITHUB_FILENAME=%s\nGITHUB_SIZE=%s\nGITHUB_SHA256=%s\n' "$EXPECTED_NAME" "$GSIZE" "$GSHA" >> verification_report.txt
+          test "$GSIZE" = "$EXPECTED_SIZE"
+          test "$GSHA" = "$EXPECTED_SHA"
+          cmp -s zenodo.zip github.zip
+          printf 'ZENODO_PUBLIC_BYTES=PASS\nGITHUB_PUBLIC_BYTES=PASS\nCROSS_HOST_BYTE_IDENTITY=PASS\n' >> verification_report.txt
+          cat verification_report.txt
+
+      - name: Upload verification report
+        uses: actions/upload-artifact@v4
+        with:
+          name: v2.1.1-crosshost-verification
+          path: verification_report.txt
