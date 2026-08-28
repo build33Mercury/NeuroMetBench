@@ -1,0 +1,51 @@
+name: Verify NeuroMetBench v2.1.1 repository synchronization
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-repository:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+          cache: pip
+      - name: Verify release-critical source and metadata bytes
+        run: sha256sum -c SHA256SUMS.txt
+      - name: Reject stale software identities
+        run: |
+          test "$(tr -d '\r\n ' < VERSION)" = '2.1.1'
+          grep -q 'version = "1.0.2"' pyproject.toml
+          grep -q '__version__ = "1.0.2"' src/neurometbench_ref/__init__.py
+          test ! -e dist/neurometbench_ref-1.0.1-py3-none-any.whl
+          test ! -e LICENSE_STATUS.txt
+          test ! -e LICENSE_SCOPE.txt
+      - name: Install exact tested software stack
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install 'numpy==2.3.5' 'scipy==1.17.0' 'pandas==2.2.3' 'setuptools>=75' wheel pytest
+          python -m pip install -e . --no-deps
+      - name: Run unit tests and independent assertions
+        run: |
+          python -m unittest discover -s tests -v
+          python verification/run_independent_assertions.py
+          neurometbench-ref self-test
+      - name: Build wheel and test from source-excluded location
+        run: |
+          rm -rf build wheelhouse
+          python -m pip wheel . --no-deps -w wheelhouse
+          test -f wheelhouse/neurometbench_ref-1.0.2-py3-none-any.whl
+          python -m venv /tmp/nmb-wheel-test
+          /tmp/nmb-wheel-test/bin/python -m pip install --upgrade pip
+          /tmp/nmb-wheel-test/bin/python -m pip install 'numpy==2.3.5' 'scipy==1.17.0' 'pandas==2.2.3'
+          /tmp/nmb-wheel-test/bin/python -m pip install wheelhouse/neurometbench_ref-1.0.2-py3-none-any.whl --no-deps
+          cd /tmp
+          /tmp/nmb-wheel-test/bin/neurometbench-ref self-test
