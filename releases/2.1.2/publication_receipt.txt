@@ -1,0 +1,10 @@
+NeuroMetBench v2.1.2 publication receipt
+GitHub tag: v2.1.2
+GitHub target commit: 0c3ce80ccb950e9f6a82ef82e42f37fa65f86725
+Asset: NeuroMetBench_v2.1.2_reproducibility_release.zip
+Size: 48000250 bytes
+SHA-256: 4ede2be1ec2cf6c0d5ab182a9ebd752efac4bf62d0b6329d6a03c2ea0b12aa66
+Zenodo version DOI: 10.5281/zenodo.22147971
+Zenodo concept DOI: 10.5281/zenodo.21830887
+GitHub public-byte verification: PASS
+Zenodo public-byte verification: PASS
