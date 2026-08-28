@@ -21,68 +21,8 @@ jobs:
           PROT_URL='https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_protein_quantification.txt'
           curl -fL --retry 4 --retry-all-errors "$RNA_URL" -o data_mrna_seq_fpkm.txt
           curl -fL --retry 4 --retry-all-errors "$PROT_URL" -o data_protein_quantification.txt
-          cat > extract_targets.py <<'PY'
-          import csv, hashlib, json
-          from pathlib import Path
-
-          TARGETS={"PHGDH","PSAT1","PSPH"}
-          outdir=Path("out")
-          receipt={
-              "source":"cBioPortal DataHub gbm_cptac_2021; Wang et al. 2021 Table S2-derived matrices",
-              "targets":sorted(TARGETS),
-              "files":{}
-          }
-
-          def cell_is_target(x):
-              if x in TARGETS:
-                  return True
-              if "|" in x and x.split("|",1)[0] in TARGETS:
-                  return True
-              return False
-
-          specs=[
-              ("rna","data_mrna_seq_fpkm.txt","https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_mrna_seq_fpkm.txt"),
-              ("protein","data_protein_quantification.txt","https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_protein_quantification.txt")
-          ]
-          for label,fn,url in specs:
-              p=Path(fn); b=p.read_bytes()
-              if b[:200].startswith(b"version https://git-lfs.github.com/spec"):
-                  raise SystemExit(f"{fn} returned LFS pointer")
-              with p.open(newline="",encoding="utf-8") as f:
-                  r=csv.reader(f,delimiter="\t")
-                  header=next(r); rows=[]
-                  for row in r:
-                      if any(cell_is_target(x) for x in row[:8]): rows.append(row)
-              if len(rows)!=3:
-                  raise SystemExit(f"{label}: expected exactly 3 target rows, got {len(rows)}")
-              found=[]
-              for row in rows:
-                  hits=[]
-                  for x in row[:8]:
-                      y=x.split("|",1)[0] if "|" in x else x
-                      if y in TARGETS: hits.append(y)
-                  found.extend(hits)
-              if set(found)!=TARGETS:
-                  raise SystemExit(f"{label}: target identity mismatch: {found}")
-              op=outdir/f"{label}_PHGDH_PSAT1_PSPH.tsv"
-              with op.open("w",newline="",encoding="utf-8") as f:
-                  w=csv.writer(f,delimiter="\t",lineterminator="\n")
-                  w.writerow(header); w.writerows(rows)
-              receipt["files"][label]={
-                  "url":url,
-                  "full_filename":fn,
-                  "full_size":p.stat().st_size,
-                  "full_sha256":hashlib.sha256(b).hexdigest(),
-                  "header_first8":header[:8],
-                  "sample_columns":len(header)-1,
-                  "selected_rows":len(rows),
-                  "selected_file":op.name,
-                  "selected_size":op.stat().st_size,
-                  "selected_sha256":hashlib.sha256(op.read_bytes()).hexdigest()
-              }
-          Path("out/rna_protein_acquisition_receipt.json").write_text(json.dumps(receipt,indent=2),encoding="utf-8")
-          PY
-          sed -i 's/^          //' extract_targets.py
+          SCRIPT='CmltcG9ydCBjc3YsIGhhc2hsaWIsIGpzb24KZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCgpUQVJHRVRTPXsiUEhHREgiLCJQU0FUMSIsIlBTUEgifQpvdXRkaXI9UGF0aCgib3V0IikKcmVjZWlwdD17CiAgICAic291cmNlIjoiY0Jpb1BvcnRhbCBEYXRhSHViIGdibV9jcHRhY18yMDIxOyBXYW5nIGV0IGFsLiAyMDIxIFRhYmxlIFMyLWRlcml2ZWQgbWF0cmljZXMiLAogICAgInRhcmdldHMiOnNvcnRlZChUQVJHRVRTKSwKICAgICJmaWxlcyI6e30KfQoKZGVmIGNlbGxfaXNfdGFyZ2V0KHgpOgogICAgaWYgeCBpbiBUQVJHRVRTOgogICAgICAgIHJldHVybiBUcnVlCiAgICBpZiAifCIgaW4geCBhbmQgeC5zcGxpdCgifCIsMSlbMF0gaW4gVEFSR0VUUzoKICAgICAgICByZXR1cm4gVHJ1ZQogICAgcmV0dXJuIEZhbHNlCgpzcGVjcz1bCiAgICAoInJuYSIsImRhdGFfbXJuYV9zZXFfZnBrbS50eHQiLCJodHRwczovL21lZGlhLmdpdGh1YnVzZXJjb250ZW50LmNvbS9tZWRpYS9jQmlvUG9ydGFsL2RhdGFodWIvcmVmcy9oZWFkcy9tYXN0ZXIvcHVibGljL2dibV9jcHRhY18yMDIxL2RhdGFfbXJuYV9zZXFfZnBrbS50eHQiKSwKICAgICgicHJvdGVpbiIsImRhdGFfcHJvdGVpbl9xdWFudGlmaWNhdGlvbi50eHQiLCJodHRwczovL21lZGlhLmdpdGh1YnVzZXJjb250ZW50LmNvbS9tZWRpYS9jQmlvUG9ydGFsL2RhdGFodWIvcmVmcy9oZWFkcy9tYXN0ZXIvcHVibGljL2dibV9jcHRhY18yMDIxL2RhdGFfcHJvdGVpbl9xdWFudGlmaWNhdGlvbi50eHQiKQpdCmZvciBsYWJlbCxmbix1cmwgaW4gc3BlY3M6CiAgICBwPVBhdGgoZm4pCiAgICBiPXAucmVhZF9ieXRlcygpCiAgICBpZiBiWzoyMDBdLnN0YXJ0c3dpdGgoYiJ2ZXJzaW9uIGh0dHBzOi8vZ2l0LWxmcy5naXRodWIuY29tL3NwZWMiKToKICAgICAgICByYWlzZSBTeXN0ZW1FeGl0KGYie2ZufSByZXR1cm5lZCBMRlMgcG9pbnRlciIpCiAgICB3aXRoIHAub3BlbihuZXdsaW5lPSIiLGVuY29kaW5nPSJ1dGYtOCIpIGFzIGY6CiAgICAgICAgcj1jc3YucmVhZGVyKGYsZGVsaW1pdGVyPSJcdCIpCiAgICAgICAgaGVhZGVyPW5leHQocikKICAgICAgICByb3dzPVtdCiAgICAgICAgZm9yIHJvdyBpbiByOgogICAgICAgICAgICBpZiBhbnkoY2VsbF9pc190YXJnZXQoeCkgZm9yIHggaW4gcm93Wzo4XSk6CiAgICAgICAgICAgICAgICByb3dzLmFwcGVuZChyb3cpCiAgICBpZiBsZW4ocm93cykhPTM6CiAgICAgICAgcmFpc2UgU3lzdGVtRXhpdChmIntsYWJlbH06IGV4cGVjdGVkIGV4YWN0bHkgMyB0YXJnZXQgcm93cywgZ290IHtsZW4ocm93cyl9IikKICAgIGZvdW5kPVtdCiAgICBmb3Igcm93IGluIHJvd3M6CiAgICAgICAgZm9yIHggaW4gcm93Wzo4XToKICAgICAgICAgICAgeT14LnNwbGl0KCJ8IiwxKVswXSBpZiAifCIgaW4geCBlbHNlIHgKICAgICAgICAgICAgaWYgeSBpbiBUQVJHRVRTOgogICAgICAgICAgICAgICAgZm91bmQuYXBwZW5kKHkpCiAgICBpZiBzZXQoZm91bmQpIT1UQVJHRVRTOgogICAgICAgIHJhaXNlIFN5c3RlbUV4aXQoZiJ7bGFiZWx9OiB0YXJnZXQgaWRlbnRpdHkgbWlzbWF0Y2g6IHtmb3VuZH0iKQogICAgb3A9b3V0ZGlyL2Yie2xhYmVsfV9QSEdESF9QU0FUMV9QU1BILnRzdiIKICAgIHdpdGggb3Aub3BlbigidyIsbmV3bGluZT0iIixlbmNvZGluZz0idXRmLTgiKSBhcyBmOgogICAgICAgIHc9Y3N2LndyaXRlcihmLGRlbGltaXRlcj0iXHQiLGxpbmV0ZXJtaW5hdG9yPSJcbiIpCiAgICAgICAgdy53cml0ZXJvdyhoZWFkZXIpCiAgICAgICAgdy53cml0ZXJvd3Mocm93cykKICAgIHJlY2VpcHRbImZpbGVzIl1bbGFiZWxdPXsKICAgICAgICAidXJsIjp1cmwsCiAgICAgICAgImZ1bGxfZmlsZW5hbWUiOmZuLAogICAgICAgICJmdWxsX3NpemUiOnAuc3RhdCgpLnN0X3NpemUsCiAgICAgICAgImZ1bGxfc2hhMjU2IjpoYXNobGliLnNoYTI1NihiKS5oZXhkaWdlc3QoKSwKICAgICAgICAiaGVhZGVyX2ZpcnN0OCI6aGVhZGVyWzo4XSwKICAgICAgICAic2FtcGxlX2NvbHVtbnMiOmxlbihoZWFkZXIpLTEsCiAgICAgICAgInNlbGVjdGVkX3Jvd3MiOmxlbihyb3dzKSwKICAgICAgICAic2VsZWN0ZWRfZmlsZSI6b3AubmFtZSwKICAgICAgICAic2VsZWN0ZWRfc2l6ZSI6b3Auc3RhdCgpLnN0X3NpemUsCiAgICAgICAgInNlbGVjdGVkX3NoYTI1NiI6aGFzaGxpYi5zaGEyNTYob3AucmVhZF9ieXRlcygpKS5oZXhkaWdlc3QoKQogICAgfQpQYXRoKCJvdXQvcm5hX3Byb3RlaW5fYWNxdWlzaXRpb25fcmVjZWlwdC5qc29uIikud3JpdGVfdGV4dChqc29uLmR1bXBzKHJlY2VpcHQsaW5kZW50PTIpLGVuY29kaW5nPSJ1dGYtOCIpCg=='
+          printf '%s' "$SCRIPT" | base64 -d > extract_targets.py
           python extract_targets.py
           sha256sum out/* > out/SHA256SUMS.txt
           cat out/rna_protein_acquisition_receipt.json
