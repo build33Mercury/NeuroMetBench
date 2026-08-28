@@ -28,16 +28,8 @@ def assert_artifact_use_allowed(sha256: str, purpose: str) -> dict:
     if allowed is None:
         raise ValueError("artifact hash is not present in the frozen disposition ledger")
     if purpose not in allowed:
-        raise PermissionError(
-            f"artifact {sha256} is not allowed for purpose {purpose}; "
-            f"allowed purposes: {sorted(allowed)}"
-        )
-    return {
-        "sha256": sha256,
-        "purpose": purpose,
-        "disposition": artifact_disposition(sha256),
-        "allowed": True,
-    }
+        raise PermissionError(f"artifact {sha256} is not allowed for purpose {purpose}; allowed purposes: {sorted(allowed)}")
+    return {"sha256": sha256, "purpose": purpose, "disposition": artifact_disposition(sha256), "allowed": True}
 
 
 def verify_file_use(path: str | Path, purpose: str) -> dict:
@@ -54,7 +46,8 @@ def load_claim_boundaries() -> dict:
 
 def claim_by_id(claim_id: str) -> dict:
     ledger = load_claim_boundaries()
-    for claim in ledger["claims"]:
-        if claim["claim_id"] == claim_id:
+    claims = list(ledger.get("permitted_claims", [])) + list(ledger.get("forbidden_claims", []))
+    for claim in claims:
+        if claim.get("claim_id") == claim_id:
             return claim
     raise KeyError(claim_id)

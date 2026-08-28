@@ -1,11 +1,11 @@
-name: neurometbench_ref_v1_0_1
+name: neurometbench_ref_v1_0_2
 channels:
   - conda-forge
 dependencies:
-  - python=3.11.15
-  - numpy=2.4.6
-  - scipy=1.17.1
-  - pandas=3.0.5
+  - python=3.13.5
+  - numpy=2.3.5
+  - scipy=1.17.0
+  - pandas=2.2.3
   - setuptools>=75
   - wheel
   - pip

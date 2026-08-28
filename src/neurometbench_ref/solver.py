@@ -23,14 +23,7 @@ def sha256_file(path: str | Path, block_size: int = 8 * 1024 * 1024) -> str:
     return digest.hexdigest()
 
 
-def primal_feasibility(
-    stoichiometry: sparse.spmatrix | np.ndarray,
-    flux: Sequence[float],
-    lower: Sequence[float],
-    upper: Sequence[float],
-    *,
-    tolerance: float = 1e-8,
-) -> dict:
+def primal_feasibility(stoichiometry, flux: Sequence[float], lower: Sequence[float], upper: Sequence[float], *, tolerance: float = 1e-8) -> dict:
     matrix = sparse.csr_matrix(stoichiometry)
     vector = np.asarray(flux, dtype=float)
     lb = np.asarray(lower, dtype=float)
@@ -39,7 +32,15 @@ def primal_feasibility(
         raise ValueError("flux and bounds must be equal-length vectors")
     if matrix.shape[1] != vector.size:
         raise ValueError("stoichiometric columns must match flux length")
+    if tolerance < 0 or not np.isfinite(tolerance):
+        raise ValueError("tolerance must be finite and non-negative")
+    if not np.all(np.isfinite(vector)) or not np.all(np.isfinite(lb)) or not np.all(np.isfinite(ub)):
+        raise ValueError("flux and bounds must contain only finite values")
+    if np.any(lb > ub):
+        raise ValueError("lower bounds cannot exceed upper bounds")
     residual = np.asarray(matrix @ vector).reshape(-1)
+    if not np.all(np.isfinite(residual)):
+        raise ValueError("stoichiometric residuals must be finite")
     lower_violation = np.maximum(lb - vector, 0.0)
     upper_violation = np.maximum(vector - ub, 0.0)
     max_mass = float(np.max(np.abs(residual))) if residual.size else 0.0
@@ -56,27 +57,13 @@ def primal_feasibility(
     }
 
 
-def tolerance_based_zero_qp_classification(
-    *,
-    zero_vector_feasible: bool,
-    maximum_feasible_biomass: float,
-    biomass_tolerance: float = 1e-10,
-    identity_quadratic: bool = True,
-) -> dict:
-    """Classify the zero solution under a prespecified numerical biomass tolerance.
-
-    This function deliberately does *not* claim that the exact optimizer is zero.
-    A solver-reported maximum biomass at or below a positive tolerance does not
-    establish that the true mathematical maximum is nonpositive.  Consequently,
-    a small positive value below the tolerance may satisfy this numerical
-    classification while leaving the exact optimum unresolved.
-    """
-    classified = bool(
-        zero_vector_feasible
-        and identity_quadratic
-        and np.isfinite(maximum_feasible_biomass)
-        and maximum_feasible_biomass <= biomass_tolerance
-    )
+def tolerance_based_zero_qp_classification(*, zero_vector_feasible: bool, maximum_feasible_biomass: float, biomass_tolerance: float = 1e-10, identity_quadratic: bool = True) -> dict:
+    """Classify zero under a prespecified numerical biomass tolerance, not as an exact optimum proof."""
+    if biomass_tolerance < 0 or not np.isfinite(biomass_tolerance):
+        raise ValueError("biomass_tolerance must be finite and non-negative")
+    if not np.isfinite(maximum_feasible_biomass):
+        raise ValueError("maximum_feasible_biomass must be finite")
+    classified = bool(zero_vector_feasible and identity_quadratic and maximum_feasible_biomass <= biomass_tolerance)
     return {
         "tolerance_based_zero_classification": classified,
         "zero_vector_feasible": bool(zero_vector_feasible),
@@ -84,10 +71,5 @@ def tolerance_based_zero_qp_classification(
         "biomass_tolerance": float(biomass_tolerance),
         "identity_quadratic": bool(identity_quadratic),
         "exact_unique_optimum_proven": False,
-        "interpretation": (
-            "Thresholded numerical classification only. A maximum-biomass result "
-            "at or below a positive tolerance does not prove that the true maximum "
-            "is nonpositive and therefore does not, by itself, prove that zero is "
-            "the exact unique QP optimum."
-        ),
+        "interpretation": "Thresholded numerical classification only. A maximum-biomass result at or below a positive tolerance does not prove that the true maximum is nonpositive and therefore does not, by itself, prove that zero is the exact unique QP optimum.",
     }
