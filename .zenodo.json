@@ -1,7 +1,9 @@
 {
   "title": "NeuroMetBench reproducibility package",
   "upload_type": "dataset",
-  "description": "Post-rejection scientific revision and reproducibility package for NeuroMetBench. Version 2.1.0 reframes the work as a patient-aware evidence-bounding methodology for transcript-derived metabolic representations across cancer proteogenomic contexts, preserves the rejected v2.0.7 state as immutable history, and adds a frozen exploratory cross-cohort attenuation analysis without changing adverse or non-admitted findings. Raw third-party molecular matrices are not redistributed where external source terms govern access. The reusable neurometbench-ref software component remains version 1.0.1.",
+  "publication_date": "2026-08-28",
+  "version": "2.1.1",
+  "description": "NeuroMetBench is a patient-aware evidence-bounding methodology for evaluating transcript-derived metabolic representations across heterogeneous proteogenomic contexts. Version 2.1.1 adds a machine-readable current article claim-evidence ledger, clarifies the cohort-conditional interpretation of BSL02 bootstrap intervals, strengthens closed-world reproducibility checks, updates the separately versioned neurometbench-ref helper software to 1.0.2 with validation-only corrections, and embeds the exact immutable v2.0.7 historical archive. Frozen article-level scientific estimates, adverse results, and claim ceilings are unchanged.",
   "creators": [
     {
       "name": "Bitar, Abdsalam",
@@ -9,7 +11,6 @@
       "orcid": "0009-0009-9517-636X"
     }
   ],
-  "version": "2.1.0",
   "license": "mit",
   "keywords": [
     "integrative genomics",

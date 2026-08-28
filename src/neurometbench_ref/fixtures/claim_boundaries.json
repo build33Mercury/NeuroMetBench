@@ -8,6 +8,7 @@
     "model_sha256": "2efd6650f48ee5b57f3c0b95f405308fa3fc9a6ba8f66f3c8b2ff831ea98dd49",
     "mras_sha256": "82506b7a89f4433c2f7596c9fafc4ac74e0e6d4b1f13ae934eee243705ae3dee"
   },
+  "fixture_scope_note": "Historical reference-implementation regression claims preserved for software tests. This fixture is not the current v2.1.1 article-level claim ledger.",
   "forbidden_claims": [
     {
       "claim": "Do not claim universal superiority, universal metabolic prediction, or uniform pathway reliability.",
@@ -39,10 +40,10 @@
     }
   ],
   "global_interpretation": "Technical reproducibility, gene-level reliability transport, pathway-level RNA-protein concordance, context transportability, spatial association, and numerical optimization validity are distinct properties and must be evaluated separately.",
-  "ledger_version": "1.0",
+  "ledger_version": "1.0.2-reference-fixture",
   "permitted_claims": [
     {
-      "claim": "The reference implementation enforces patient-level or equal-patient inference and rejects duplicate patient-metric rows that would create pseudoreplication.",
+      "claim": "The reference implementation accepts one row per metric-patient correlation, rejects duplicate or invalid rows, and applies equal-row patient-level aggregation to validated inputs; it does not verify how an upstream patient effect was constructed.",
       "claim_id": "PATIENT_LEVEL_INFERENCE",
       "status": "VALID_METHOD"
     },
@@ -77,12 +78,12 @@
       "status": "VALID_TOLERANCE_CLASSIFICATION_AND_FAILURE_FIXTURE"
     },
     {
-      "claim": "The neurometbench-ref 1.0.1 source, wheel, public regression suite, claim firewall, and patient-aware statistical core reproduce from source-excluded installations.",
+      "claim": "The neurometbench-ref 1.0.2 source, wheel, regression tests, and source-excluded smoke test preserve the reference statistical core while repairing claim lookup and affected invalid-input handling; frozen scientific authorities are unchanged.",
       "claim_id": "REFERENCE_SOFTWARE",
       "status": "VALID_REPRODUCIBLE_IMPLEMENTATION"
     }
   ],
   "project": "NeuroMetBench",
-  "release": "Reference Implementation v1.0.1",
+  "release": "Reference Implementation v1.0.2",
   "scope": "Patient-aware claim-admissibility auditing for transcript-derived metabolic inference in glioblastoma."
 }

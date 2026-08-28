@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 from itertools import product
-import math
-from typing import Iterable, Sequence
+from typing import Sequence
 
 import numpy as np
 from scipy.stats import rankdata, spearmanr
@@ -12,6 +11,8 @@ def benjamini_hochberg(p_values: Sequence[float]) -> np.ndarray:
     """Return BH-FDR q-values in the original order, preserving NaNs."""
     values = np.asarray(p_values, dtype=float)
     output = np.full(values.shape, np.nan, dtype=float)
+    if np.isinf(values).any():
+        raise ValueError("p-values may be finite values or NaN, not infinity")
     finite = np.flatnonzero(np.isfinite(values))
     if finite.size == 0:
         return output
@@ -30,11 +31,7 @@ def benjamini_hochberg(p_values: Sequence[float]) -> np.ndarray:
     return output
 
 
-def exact_sign_flip_pvalue(
-    effects: Sequence[float],
-    *,
-    alternative: str = "two-sided",
-) -> float:
+def exact_sign_flip_pvalue(effects: Sequence[float], *, alternative: str = "two-sided") -> float:
     """Exact equal-unit sign-flip p-value for the arithmetic mean effect."""
     x = np.asarray(effects, dtype=float)
     if x.ndim != 1 or x.size == 0 or not np.all(np.isfinite(x)):
@@ -42,10 +39,7 @@ def exact_sign_flip_pvalue(
     if x.size > 20:
         raise ValueError("exact enumeration is capped at 20 independent units")
     observed = float(np.mean(x))
-    null = np.asarray([
-        np.mean(x * np.asarray(signs, dtype=float))
-        for signs in product((-1.0, 1.0), repeat=x.size)
-    ])
+    null = np.asarray([np.mean(x * np.asarray(signs, dtype=float)) for signs in product((-1.0, 1.0), repeat=x.size)])
     tolerance = 1e-15
     if alternative == "two-sided":
         extreme = np.abs(null) >= abs(observed) - tolerance
@@ -59,10 +53,12 @@ def exact_sign_flip_pvalue(
 
 
 def fisher_z_equal_weight(correlations: Sequence[float]) -> float:
-    """Equal-weight Fisher-z synthesis for independent-unit correlations."""
+    """Equal-weight Fisher-z synthesis for valid independent-unit correlations."""
     r = np.asarray(correlations, dtype=float)
     if r.ndim != 1 or r.size == 0 or not np.all(np.isfinite(r)):
         raise ValueError("correlations must be a non-empty finite vector")
+    if np.any((r < -1.0) | (r > 1.0)):
+        raise ValueError("correlations must lie within [-1, 1]")
     clipped = np.clip(r, -1 + 1e-12, 1 - 1e-12)
     return float(np.tanh(np.mean(np.arctanh(clipped))))
 
@@ -82,8 +78,8 @@ def spearman_safe(x: Sequence[float], y: Sequence[float]) -> float:
 
 def midrank_percentile(values: Sequence[float]) -> np.ndarray:
     x = np.asarray(values, dtype=float)
-    if x.ndim != 1 or not np.all(np.isfinite(x)):
-        raise ValueError("values must be a finite one-dimensional vector")
+    if x.ndim != 1 or x.size == 0 or not np.all(np.isfinite(x)):
+        raise ValueError("values must be a non-empty finite one-dimensional vector")
     if x.size == 1:
         return np.asarray([0.5])
     return (rankdata(x, method="average") - 1.0) / (x.size - 1.0)
@@ -92,8 +88,10 @@ def midrank_percentile(values: Sequence[float]) -> np.ndarray:
 def pairwise_order_accuracy(x: Sequence[float], y: Sequence[float]) -> dict:
     a = np.asarray(x, dtype=float)
     b = np.asarray(y, dtype=float)
-    if a.shape != b.shape or a.ndim != 1:
-        raise ValueError("x and y must be equally sized vectors")
+    if a.shape != b.shape or a.ndim != 1 or a.size == 0:
+        raise ValueError("x and y must be non-empty equally sized vectors")
+    if not np.all(np.isfinite(a)) or not np.all(np.isfinite(b)):
+        raise ValueError("x and y must contain only finite values")
     concordant = discordant = ties = 0
     for i in range(a.size):
         for j in range(i + 1, a.size):
