@@ -1,4 +1,4 @@
-name: Temporary v2.1.2 protein identifier diagnostics
+name: Temporary v2.1.2 RNA protein acquisition
 
 on:
   push:
@@ -9,21 +9,86 @@ permissions:
   contents: read
 
 jobs:
-  inspect:
+  acquire:
     runs-on: ubuntu-latest
     steps:
-      - name: Inspect frozen serine-core identifiers in Wang protein matrix
+      - name: Acquire frozen serine-core RNA and protein rows
         shell: bash
         run: |
           set -euo pipefail
-          URL='https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_protein_quantification.txt'
-          curl -fL --retry 4 --retry-all-errors "$URL" -o protein.txt
-          echo 'HEADER:'
-          head -n 1 protein.txt | cut -c1-500
-          echo 'TARGET STRING MATCHES:'
-          grep -i -E 'PHGDH|PSAT1|PSPH' protein.txt | cut -c1-1200 || true
-          echo 'FIRST 5 DATA IDS:'
-          sed -n '2,6p' protein.txt | cut -f1
-          echo 'COUNTS:'
-          wc -l protein.txt
-          sha256sum protein.txt
+          mkdir -p out
+          RNA_URL='https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_mrna_seq_fpkm.txt'
+          PROT_URL='https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_protein_quantification.txt'
+          curl -fL --retry 4 --retry-all-errors "$RNA_URL" -o data_mrna_seq_fpkm.txt
+          curl -fL --retry 4 --retry-all-errors "$PROT_URL" -o data_protein_quantification.txt
+          cat > extract_targets.py <<'PY'
+          import csv, hashlib, json
+          from pathlib import Path
+
+          TARGETS={"PHGDH","PSAT1","PSPH"}
+          outdir=Path("out")
+          receipt={
+              "source":"cBioPortal DataHub gbm_cptac_2021; Wang et al. 2021 Table S2-derived matrices",
+              "targets":sorted(TARGETS),
+              "files":{}
+          }
+
+          def cell_is_target(x):
+              if x in TARGETS:
+                  return True
+              if "|" in x and x.split("|",1)[0] in TARGETS:
+                  return True
+              return False
+
+          specs=[
+              ("rna","data_mrna_seq_fpkm.txt","https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_mrna_seq_fpkm.txt"),
+              ("protein","data_protein_quantification.txt","https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_protein_quantification.txt")
+          ]
+          for label,fn,url in specs:
+              p=Path(fn); b=p.read_bytes()
+              if b[:200].startswith(b"version https://git-lfs.github.com/spec"):
+                  raise SystemExit(f"{fn} returned LFS pointer")
+              with p.open(newline="",encoding="utf-8") as f:
+                  r=csv.reader(f,delimiter="\t")
+                  header=next(r); rows=[]
+                  for row in r:
+                      if any(cell_is_target(x) for x in row[:8]): rows.append(row)
+              if len(rows)!=3:
+                  raise SystemExit(f"{label}: expected exactly 3 target rows, got {len(rows)}")
+              found=[]
+              for row in rows:
+                  hits=[]
+                  for x in row[:8]:
+                      y=x.split("|",1)[0] if "|" in x else x
+                      if y in TARGETS: hits.append(y)
+                  found.extend(hits)
+              if set(found)!=TARGETS:
+                  raise SystemExit(f"{label}: target identity mismatch: {found}")
+              op=outdir/f"{label}_PHGDH_PSAT1_PSPH.tsv"
+              with op.open("w",newline="",encoding="utf-8") as f:
+                  w=csv.writer(f,delimiter="\t",lineterminator="\n")
+                  w.writerow(header); w.writerows(rows)
+              receipt["files"][label]={
+                  "url":url,
+                  "full_filename":fn,
+                  "full_size":p.stat().st_size,
+                  "full_sha256":hashlib.sha256(b).hexdigest(),
+                  "header_first8":header[:8],
+                  "sample_columns":len(header)-1,
+                  "selected_rows":len(rows),
+                  "selected_file":op.name,
+                  "selected_size":op.stat().st_size,
+                  "selected_sha256":hashlib.sha256(op.read_bytes()).hexdigest()
+              }
+          Path("out/rna_protein_acquisition_receipt.json").write_text(json.dumps(receipt,indent=2),encoding="utf-8")
+          PY
+          sed -i 's/^          //' extract_targets.py
+          python extract_targets.py
+          sha256sum out/* > out/SHA256SUMS.txt
+          cat out/rna_protein_acquisition_receipt.json
+      - name: Upload acquired target rows
+        uses: actions/upload-artifact@v4
+        with:
+          name: v2.1.2-gbm-rna-protein-targets
+          path: out/
+          retention-days: 7
