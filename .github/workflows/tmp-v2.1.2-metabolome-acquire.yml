@@ -1,0 +1,60 @@
+name: Temporary v2.1.2 metabolome acquisition
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Acquire official/public GBM metabolome table
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          URL1='https://pmc.ncbi.nlm.nih.gov/articles/PMC8044053/bin/NIHMS1665743-supplement-3.xlsx'
+          URL2='https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_metabolome_quantification.txt'
+          echo "Attempting PMC Table S2: $URL1"
+          if curl -fL --retry 4 --retry-all-errors "$URL1" -o table_s2.xlsx; then
+            python -m pip install --quiet openpyxl
+            python - <<'PY'
+import hashlib, json
+from pathlib import Path
+import openpyxl
+p=Path('table_s2.xlsx')
+wb=openpyxl.load_workbook(p, read_only=True, data_only=True)
+preferred=[s for s in wb.sheetnames if 'metabol' in s.lower() and 'normal' in s.lower()]
+if not preferred:
+    preferred=[s for s in wb.sheetnames if 'metabol' in s.lower()]
+if not preferred: raise SystemExit('No metabolome sheet found')
+name=preferred[0]; ws=wb[name]
+out=Path('out/metabolome_normalized_from_wang_table_s2.tsv')
+with out.open('w', encoding='utf-8', newline='') as f:
+    for row in ws.iter_rows(values_only=True):
+        f.write('\t'.join('' if v is None else str(v).replace('\t',' ') for v in row)+'\n')
+receipt={'source':'Wang et al. 2021 Cancer Cell Table S2 via PMC','url':'https://pmc.ncbi.nlm.nih.gov/articles/PMC8044053/bin/NIHMS1665743-supplement-3.xlsx','download_filename':p.name,'download_size':p.stat().st_size,'download_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'sheet':name,'sheet_names':wb.sheetnames,'extracted_file':out.name,'extracted_size':out.stat().st_size,'extracted_sha256':hashlib.sha256(out.read_bytes()).hexdigest()}
+Path('out/acquisition_receipt.json').write_text(json.dumps(receipt,indent=2),encoding='utf-8')
+PY
+          else
+            echo "PMC direct supplementary download failed; trying cBioPortal DataHub LFS mirror"
+            curl -fL --retry 4 --retry-all-errors "$URL2" -o out/metabolome_normalized_from_cbioportal.txt
+            python - <<'PY'
+import hashlib,json
+from pathlib import Path
+p=Path('out/metabolome_normalized_from_cbioportal.txt')
+if p.read_bytes()[:200].startswith(b'version https://git-lfs.github.com/spec'): raise SystemExit('cBioPortal URL returned LFS pointer, not content')
+receipt={'source':'cBioPortal DataHub gbm_cptac_2021 public metabolome matrix; Wang et al. 2021 derived data','url':'https://media.githubusercontent.com/media/cBioPortal/datahub/refs/heads/master/public/gbm_cptac_2021/data_metabolome_quantification.txt','download_filename':p.name,'download_size':p.stat().st_size,'download_sha256':hashlib.sha256(p.read_bytes()).hexdigest()}
+Path('out/acquisition_receipt.json').write_text(json.dumps(receipt,indent=2),encoding='utf-8')
+PY
+          fi
+          sha256sum out/* > out/SHA256SUMS.txt
+          cat out/acquisition_receipt.json
+      - name: Upload acquired metabolome artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: v2.1.2-gbm-metabolome-acquisition
+          path: out/
+          retention-days: 7
