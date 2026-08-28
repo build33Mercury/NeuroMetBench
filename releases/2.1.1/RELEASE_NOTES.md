@@ -9,6 +9,7 @@ Version 2.1.1 is a corrective reproducibility and manuscript-synchronization rel
 - Reframes cross-cohort wording to refer to the same frozen three-gene serine scoring rule rather than implying numerically identical cohort-relative scores.
 - Updates `neurometbench-ref` from 1.0.1 to 1.0.2 with validation-only corrections to claim lookup and invalid-input handling, additional edge-case tests, and source-excluded wheel verification.
 - Strengthens closed-world checksum verification and package provenance.
+- Hardens deterministic figure regeneration against Matplotlib process-shutdown hangs; the final 18 manuscript-facing PNG/SVG/EPS authorities reproduce byte-identically after the repair.
 - Embeds the exact immutable public v2.0.7 archive to make the historical provenance chain physically auditable from the current release.
 - Synchronizes manuscript, supplementary material, figures, Online Resource 2, software, and cross-package identities.
 
@@ -16,8 +17,8 @@ Version 2.1.1 is a corrective reproducibility and manuscript-synchronization rel
 
 `NeuroMetBench_v2.1.1_reproducibility_release.zip`
 
-- Size: 36,623,018 bytes
-- SHA-256: `beb2a2e53c45bb141f03c30cf8097b33372d454dba86f542253b5a1dcb3f732f`
+- Size: 36,623,555 bytes
+- SHA-256: `cd809679d268674d45aa1c1e2f23de32146f0c59261b5137b5f25d7672848bef`
 
 ## Scientific results
 
