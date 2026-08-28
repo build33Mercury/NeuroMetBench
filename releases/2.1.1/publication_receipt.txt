@@ -1,0 +1,29 @@
+NeuroMetBench v2.1.1 public publication receipt
+
+Publication date: 2026-08-28
+Zenodo version DOI: 10.5281/zenodo.22141290
+Zenodo concept DOI: 10.5281/zenodo.21830887
+GitHub release tag: v2.1.1
+GitHub release ID: 378365741
+GitHub release published_at: 2026-08-28T09:01:03Z
+
+Canonical public asset:
+NeuroMetBench_v2.1.1_reproducibility_release.zip
+Size: 36623555 bytes
+SHA-256: cd809679d268674d45aa1c1e2f23de32146f0c59261b5137b5f25d7672848bef
+Zenodo MD5 metadata: md5:9cc50b6bc9ca509a3abae3045df3d7c5
+
+Independent public cross-host verification:
+GitHub Actions run: 33157929874
+ZENODO_STATUS_PUBLISHED=PASS
+ZENODO_VERSION=PASS
+ZENODO_VERSION_DOI=PASS
+ZENODO_CONCEPT_DOI=PASS
+ZENODO_SINGLE_EXPECTED_FILE=PASS
+ZENODO_PUBLIC_BYTES=PASS
+GITHUB_PUBLIC_BYTES=PASS
+CROSS_HOST_BYTE_IDENTITY=PASS
+PUBLICATION_IDENTITY_GATE=PASS
+
+Observed non-blocking metadata note:
+Zenodo keyword field was empty at verification time. This does not alter the DOI, archive bytes, provenance, scientific content, or public release identity.
