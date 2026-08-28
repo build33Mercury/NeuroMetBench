@@ -1,4 +1,4 @@
-name: Verify NeuroMetBench v2.1.1 repository synchronization
+name: Verify NeuroMetBench v2.1.2 repository synchronization
 
 on:
   pull_request:
@@ -22,7 +22,7 @@ jobs:
         run: sha256sum -c SHA256SUMS.txt
       - name: Reject stale software identities
         run: |
-          test "$(tr -d '\r\n ' < VERSION)" = '2.1.1'
+          test "$(tr -d '\r\n ' < VERSION)" = '2.1.2'
           grep -q 'version = "1.0.2"' pyproject.toml
           grep -q '__version__ = "1.0.2"' src/neurometbench_ref/__init__.py
           test ! -e dist/neurometbench_ref-1.0.1-py3-none-any.whl

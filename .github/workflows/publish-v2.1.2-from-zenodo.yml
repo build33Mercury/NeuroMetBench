@@ -1,0 +1,107 @@
+name: Publish NeuroMetBench v2.1.2 from verified Zenodo asset
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish-and-verify:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, 'Publish NeuroMetBench v2.1.2 from Zenodo')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Fetch and verify exact Zenodo v2.1.2 record
+        env:
+          EXPECTED_NAME: NeuroMetBench_v2.1.2_reproducibility_release.zip
+          EXPECTED_SHA256: 4ede2be1ec2cf6c0d5ab182a9ebd752efac4bf62d0b6329d6a03c2ea0b12aa66
+          EXPECTED_SIZE: '48000250'
+          ZENODO_RECORD_ID: '22147971'
+          EXPECTED_DOI: '10.5281/zenodo.22147971'
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, pathlib, urllib.request
+          rid=os.environ['ZENODO_RECORD_ID']; name=os.environ['EXPECTED_NAME']; expected=os.environ['EXPECTED_SHA256']; size=int(os.environ['EXPECTED_SIZE']); expected_doi=os.environ['EXPECTED_DOI']
+          req=urllib.request.Request(f'https://zenodo.org/api/records/{rid}',headers={'User-Agent':'NeuroMetBench-v2.1.2-publisher'})
+          with urllib.request.urlopen(req,timeout=90) as r: record=json.load(r)
+          md=record.get('metadata') or {}
+          if str(md.get('version','')).lstrip('v')!='2.1.2': raise SystemExit(f'Zenodo version mismatch: {md.get("version")}')
+          doi=record.get('doi') or ((record.get('pids') or {}).get('doi') or {}).get('identifier')
+          if str(doi)!=expected_doi: raise SystemExit(f'Zenodo DOI mismatch: {doi} != {expected_doi}')
+          files=record.get('files') or []
+          if isinstance(files,dict): files=list((files.get('entries') or {}).values())
+          target=next((f for f in files if (f.get('key') or f.get('filename'))==name),None)
+          if target is None: raise SystemExit('Expected Zenodo asset not found')
+          links=target.get('links') or {}; url=links.get('content') or links.get('download') or links.get('self')
+          if not url: raise SystemExit('Zenodo asset download URL missing')
+          req=urllib.request.Request(url,headers={'User-Agent':'NeuroMetBench-v2.1.2-publisher'})
+          with urllib.request.urlopen(req,timeout=240) as r: raw=r.read()
+          got=hashlib.sha256(raw).hexdigest()
+          if len(raw)!=size: raise SystemExit(f'Zenodo size mismatch {len(raw)} != {size}')
+          if got!=expected: raise SystemExit(f'Zenodo SHA-256 mismatch {got} != {expected}')
+          pathlib.Path('/tmp/'+name).write_bytes(raw)
+          pathlib.Path('/tmp/ZENODO_VERSION_DOI.txt').write_text(str(doi)+'\n',encoding='utf-8')
+          print('ZENODO_ASSET_PASS',rid,doi,got,len(raw))
+          PY
+
+      - name: Create immutable GitHub v2.1.2 release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view v2.1.2 >/dev/null 2>&1; then
+            echo 'GitHub release v2.1.2 already exists; refusing to overwrite immutable history.'
+            exit 1
+          fi
+          gh release create v2.1.2 \
+            /tmp/NeuroMetBench_v2.1.2_reproducibility_release.zip \
+            releases/2.1.2/RELEASE_ASSET_SHA256.txt \
+            --target "${GITHUB_SHA}" \
+            --title 'NeuroMetBench v2.1.2' \
+            --notes-file releases/2.1.2/RELEASE_NOTES.md \
+            --latest
+
+      - name: Verify public GitHub release bytes and record publication receipt
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_NAME: NeuroMetBench_v2.1.2_reproducibility_release.zip
+          EXPECTED_SHA256: 4ede2be1ec2cf6c0d5ab182a9ebd752efac4bf62d0b6329d6a03c2ea0b12aa66
+          EXPECTED_SIZE: '48000250'
+        run: |
+          mkdir -p /tmp/github-public
+          gh release download v2.1.2 --pattern "$EXPECTED_NAME" --dir /tmp/github-public
+          python - <<'PY'
+          import hashlib, os, pathlib
+          p=pathlib.Path('/tmp/github-public')/os.environ['EXPECTED_NAME']
+          raw=p.read_bytes(); got=hashlib.sha256(raw).hexdigest(); size=len(raw)
+          if got!=os.environ['EXPECTED_SHA256']: raise SystemExit('GitHub public asset SHA mismatch')
+          if size!=int(os.environ['EXPECTED_SIZE']): raise SystemExit('GitHub public asset size mismatch')
+          doi=pathlib.Path('/tmp/ZENODO_VERSION_DOI.txt').read_text().strip()
+          receipt=(
+            'NeuroMetBench v2.1.2 publication receipt\n'
+            'GitHub tag: v2.1.2\n'
+            f'GitHub target commit: {os.environ.get("GITHUB_SHA","")}\n'
+            f'Asset: {p.name}\n'
+            f'Size: {size} bytes\n'
+            f'SHA-256: {got}\n'
+            f'Zenodo version DOI: {doi}\n'
+            'Zenodo concept DOI: 10.5281/zenodo.21830887\n'
+            'GitHub public-byte verification: PASS\n'
+            'Zenodo public-byte verification: PASS\n'
+          )
+          pathlib.Path('releases/2.1.2/publication_receipt.txt').write_text(receipt,encoding='utf-8')
+          print(receipt)
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add releases/2.1.2/publication_receipt.txt
+          git commit -m 'Record NeuroMetBench v2.1.2 public byte verification'
+          git push

@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.1.2 - 2026-08-28
+
+- Added exhaustive patient-influence stress tests for LSCC and CNS/HGG primary endpoints and cross-cohort attenuation.
+- Added paired pathway-specificity and structured-missingness sensitivities; LSCC specificity is exploratory while CNS/HGG replication remains unsupported.
+- Added an internally preanalysis-frozen orthogonal Wang/CPTAC GBM measured-metabolomics sensitivity, preserving the weak and uncertain L-serine association.
+- Added a recovered historical METAFlux reaction-identity and cryptographic artifact-integrity firewall without claiming historical solver optimality or KKT evidence.
+- Expanded the article claim-evidence ledger from 18 to 21 claims and added four executable v2.1.2 verifier modules.
+- Updated Online Resource 2 to a 183-file closed world excluding its checksum manifest.
+- Added the minimal cBioPortal/Wang-CPTAC input subset required for offline reproduction under ODbL 1.0; NeuroMetBench-authored material remains MIT-licensed.
+- Preserved all prior adverse conclusions, historical public releases, and claim ceilings.
+
 ## 2.1.1 - 2026-08-28
 
 - Added the current article-level claim-evidence ledger, state-assignment specification, and verifier.

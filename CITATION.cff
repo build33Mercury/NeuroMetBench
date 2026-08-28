@@ -1,26 +1,28 @@
 cff-version: 1.2.0
-message: "If you use NeuroMetBench, please cite the software/reproducibility release and the associated manuscript."
+message: "If you use NeuroMetBench, please cite the reproducibility release and associated manuscript. Licensing is file-specific; see LICENSE_SCOPE.md."
 title: "NeuroMetBench reproducibility package"
 type: dataset
-version: 2.1.1
+version: 2.1.2
 date-released: 2026-08-28
 authors:
   - family-names: Bitar
     given-names: Abdsalam
     orcid: "https://orcid.org/0009-0009-9517-636X"
 repository-code: "https://github.com/build33Mercury/NeuroMetBench"
-url: "https://doi.org/10.5281/zenodo.21830887"
+url: "https://doi.org/10.5281/zenodo.22147971"
 identifiers:
+  - type: doi
+    value: "10.5281/zenodo.22147971"
+    description: "Zenodo DOI for NeuroMetBench v2.1.2"
   - type: doi
     value: "10.5281/zenodo.21830887"
     description: "Zenodo concept DOI for all NeuroMetBench versions"
-license: MIT
 keywords:
   - integrative genomics
   - transcriptomics
   - proteogenomics
+  - metabolomics
   - metabolic inference
   - patient-level inference
-  - benchmarking
   - reproducibility
   - glioma

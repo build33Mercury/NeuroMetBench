@@ -2,8 +2,8 @@
   "title": "NeuroMetBench reproducibility package",
   "upload_type": "dataset",
   "publication_date": "2026-08-28",
-  "version": "2.1.1",
-  "description": "NeuroMetBench is a patient-aware evidence-bounding methodology for evaluating transcript-derived metabolic representations across heterogeneous proteogenomic contexts. Version 2.1.1 adds a machine-readable current article claim-evidence ledger, clarifies the cohort-conditional interpretation of BSL02 bootstrap intervals, strengthens closed-world reproducibility checks, updates the separately versioned neurometbench-ref helper software to 1.0.2 with validation-only corrections, and embeds the exact immutable v2.0.7 historical archive. Frozen article-level scientific estimates, adverse results, and claim ceilings are unchanged.",
+  "version": "2.1.2",
+  "description": "NeuroMetBench is a patient-aware evidence-bounding methodology for evaluating transcript-derived metabolic representations across heterogeneous proteogenomic contexts. Version 2.1.2 adds revision-stage patient-influence and pathway-specificity stress tests, an internally preanalysis-frozen orthogonal measured-metabolomics sensitivity in the Wang/CPTAC glioblastoma cohort, and a recovered reaction-identity/artifact-integrity firewall for historical METAFlux outputs. The new evidence is deliberately asymmetric: LSCC pathway specificity is supported exploratorily, CNS specificity replication is not supported, and correspondence between the transcript-derived serine score and measured L-serine remains weak and uncertain. Historical solver optimality/KKT evidence is not reconstructed, and prior adverse results and claim ceilings remain preserved. Licensing is mixed by file: NeuroMetBench-authored material is MIT-licensed, while the minimal redistributed cBioPortal/Wang-CPTAC input subset remains under ODbL 1.0. The Zenodo record should declare both licenses.",
   "creators": [
     {
       "name": "Bitar, Abdsalam",
@@ -11,14 +11,13 @@
       "orcid": "0009-0009-9517-636X"
     }
   ],
-  "license": "mit",
   "keywords": [
     "integrative genomics",
     "transcriptomics",
     "proteogenomics",
+    "metabolomics",
     "metabolic inference",
     "patient-level inference",
-    "benchmarking",
     "reproducibility",
     "glioma"
   ],
