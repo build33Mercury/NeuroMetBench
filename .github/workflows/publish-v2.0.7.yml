@@ -1,0 +1,118 @@
+name: Publish NeuroMetBench v2.0.7 exact release
+
+on:
+  push:
+    branches:
+      - v2.0.7-release-staging
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TARGET_SHA: 2d4e795c703e36c03da8ec8449e27424a6327813
+      BASE_SHA256: 84c6f2d5891422cacdd5ce1f121e436c070fca2f5632091ce84e96641c00d808
+      BASE_SIZE: '21767849'
+      PATCH_SHA256: 3555e1388bfbc993933a5ad458620c3252b3ff1ed8daa10c2ddc638b7a6b408c
+      FINAL_SHA256: 955bfafae9bf2a3b85f06a0485f27760e23ab72c669ffedf061b736c90670bba
+      FINAL_SIZE: '21785165'
+      ASSET: NeuroMetBench_v2.0.7_reproducibility_release.zip
+    steps:
+      - name: Checkout staging branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download verified v2.0.6 predecessor
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL1="https://github.com/build33Mercury/NeuroMetBench/releases/download/v2.0.6/NeuroMetBench_v2.0.6_reproducibility_release.zip"
+          URL2="https://zenodo.org/records/22070704/files/NeuroMetBench_v2.0.6_reproducibility_release.zip?download=1"
+          if ! curl --fail --location --retry 3 --output base_v206.zip "$URL1"; then
+            curl --fail --location --retry 3 --output base_v206.zip "$URL2"
+          fi
+          echo "$BASE_SHA256  base_v206.zip" | sha256sum -c -
+          test "$(stat -c %s base_v206.zip)" = "$BASE_SIZE"
+
+      - name: Decode and verify v2.0.7 patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          base64 --decode release-stage/v207_patch_payload.tar.gz.b64 > v207_patch_payload.tar.gz
+          echo "$PATCH_SHA256  v207_patch_payload.tar.gz" | sha256sum -c -
+
+      - name: Reconstruct exact frozen v2.0.7 bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir work
+          unzip -q base_v206.zip -d work
+          tar -xzf v207_patch_payload.tar.gz -C work
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile
+
+          FIXED=(2026,8,23,0,0,0)
+          MODE=(0o100644 << 16)
+
+          def build(root: Path, out: Path):
+              files=sorted((p for p in root.rglob('*') if p.is_file() and p.resolve()!=out.resolve()), key=lambda p:p.relative_to(root).as_posix())
+              with zipfile.ZipFile(out,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
+                  for p in files:
+                      rel=p.relative_to(root).as_posix()
+                      zi=zipfile.ZipInfo(rel,date_time=FIXED)
+                      zi.compress_type=zipfile.ZIP_DEFLATED
+                      zi.create_system=3
+                      zi.external_attr=MODE
+                      zi.flag_bits=0
+                      z.writestr(zi,p.read_bytes(),compress_type=zipfile.ZIP_DEFLATED,compresslevel=9)
+
+          root=Path('work')
+          nested=root/'online_resource_2.zip'
+          if nested.exists(): nested.unlink()
+          build(root/'online_resource_2', nested)
+          build(root, Path('NeuroMetBench_v2.0.7_reproducibility_release.zip'))
+          PY
+          echo "$FINAL_SHA256  $ASSET" | sha256sum -c -
+          test "$(stat -c %s "$ASSET")" = "$FINAL_SIZE"
+          unzip -t "$ASSET" >/dev/null
+
+      - name: Refuse historical overwrite
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code --tags origin "refs/tags/v2.0.7" >/dev/null 2>&1; then
+            echo 'v2.0.7 already exists; refusing to overwrite history.' >&2
+            exit 1
+          fi
+          test "$(git rev-parse origin/main)" = "$TARGET_SHA"
+
+      - name: Create GitHub v2.0.7 release and upload exact asset
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release create v2.0.7 "$ASSET" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$TARGET_SHA" \
+            --title 'NeuroMetBench v2.0.7' \
+            --notes-file releases/2.0.7/RELEASE_NOTES.md
+
+      - name: Re-download public GitHub asset and verify exact bytes
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir public_verify
+          gh release download v2.0.7 --repo "$GITHUB_REPOSITORY" --pattern "$ASSET" --dir public_verify
+          echo "$FINAL_SHA256  public_verify/$ASSET" | sha256sum -c -
+          test "$(stat -c %s "public_verify/$ASSET")" = "$FINAL_SIZE"
+          echo 'PUBLIC_GITHUB_V2_0_7_EXACT_BYTES_PASS'
